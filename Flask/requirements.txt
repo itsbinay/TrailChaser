@@ -1,3 +1,6 @@
 flask
 flask-pymongo
 python-dotenv
+'pymongo[srv]'
+bs4
+lxml
