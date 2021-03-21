@@ -1,1 +1,6 @@
 node_modules/
+Flask/pymongoexample/__pycache__/__init__.cpython-39.pyc
+Flask/pymongoexample/__pycache__/extensions.cpython-39.pyc
+Flask/pymongoexample/__pycache__/main.cpython-39.pyc
+Flask/pymongoexample/__pycache__/scrapeTrails.cpython-39.pyc
+Flask/pymongoexample/__pycache__/settings.cpython-39.pyc

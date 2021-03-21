@@ -1,6 +1,6 @@
 flask
 flask-pymongo
 python-dotenv
-'pymongo[srv]'
+pymongo==3.11.3
 bs4
 lxml

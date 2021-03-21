@@ -1,7 +1,7 @@
 from flask import Blueprint
-
 from .extensions import mongo 
 from .scrapeTrails import trail_scrape
+from flask import jsonify
 
 main = Blueprint('main', __name__)
 
@@ -20,6 +20,13 @@ def check_trails():
 def index():
     return '<h1>Welcome To the Home Page!</h1>'
 
+@main.route('/getTrails', methods = ['GET'])
+def get_all_trails():
+    trails = mongo.db.Trails
+    output = []
+    for trail in trails.find():
+        output.append({'name' : trail['name'], 'location' : trail['location'], 'difficulty': trail['difficulty']})
+    return jsonify({'result': output})
 
 # def sample():
 #     user_collection = mongo.db.users
