@@ -6,6 +6,7 @@ export type RootStackParamList = {
 export type BottomTabParamList = {
     Home: undefined;
     Profile: undefined;
+    History: undefined
 }
 
 export type HomeScreenParamList = {
@@ -13,5 +14,9 @@ export type HomeScreenParamList = {
 }
 
 export type ProfileScreenParamList = {
+    Root: undefined;
+}
+
+export type HistoryScreenParamList = {
     Root: undefined;
 }
