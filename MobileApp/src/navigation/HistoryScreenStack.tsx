@@ -10,12 +10,17 @@ export default function HistoryScreenNavigator(){
     return(
         <HistoryScreenStack.Navigator
             initialRouteName="Root"
+            screenOptions={{
+                headerTitleStyle:{color:"black"}
+            }}
             >
             <HistoryScreenStack.Screen
                 name="Root"
                 component={HistoryScreenRoot}
-                options={{headerTitle:'History'}}
-                />
+                options={{
+                    headerTitle:'History'
+                }}
+            />
         </HistoryScreenStack.Navigator>
     )
 }

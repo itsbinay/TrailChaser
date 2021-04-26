@@ -5,7 +5,7 @@ import {View,Text} from 'react-native';
 function HomeScreenRoot(){
 
     return (
-        <View>
+        <View style={{flex:1}}>
             <Text>Hello Home</Text>
         </View>
     )

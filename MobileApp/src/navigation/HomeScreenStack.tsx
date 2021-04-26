@@ -11,6 +11,9 @@ export default function HomeScreenNavigator() {
     return (
         <HomeScreenStack.Navigator
             initialRouteName="Root"
+            screenOptions={{
+                headerTitleStyle:{color:"black",}
+            }}
             >
             <HomeScreenStack.Screen
                 name="Root"

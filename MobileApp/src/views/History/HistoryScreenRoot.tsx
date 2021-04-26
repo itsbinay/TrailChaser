@@ -4,7 +4,7 @@ import {View, Text} from 'react-native';
 function HistoryScreenRoot(){
 
     return(
-        <View>
+        <View style={{flex:1}}>
             <Text>Hello World</Text>
         </View>
     )
