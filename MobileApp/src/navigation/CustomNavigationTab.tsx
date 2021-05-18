@@ -2,6 +2,11 @@ import React from 'react';
 import {View,Text,TouchableOpacity} from 'react-native';
 
 export default function CustomNavigationTab({state,descriptors,navigation}:any){
+
+    const tintColor = "#597d35"
+
+    const fontActiveTintColor = "#f7fffe"
+    const fontInAtiveTintColor = "#92a4ae"
     return(
         <View
             style={{
@@ -10,12 +15,12 @@ export default function CustomNavigationTab({state,descriptors,navigation}:any){
                     backgroundColor:'#ffffff',
                     borderTopLeftRadius:30,
                     borderTopRightRadius:30,
-                    shadowColor: "#000",
+                    shadowColor: "#597d35",
                     shadowOffset: {
                         width: 0,
                         height: 5,
                     },
-                    shadowOpacity: 0.34,
+                    shadowOpacity: 0.64,
                     shadowRadius: 6.27,
                     elevation: 10,
                 }}>
@@ -60,11 +65,11 @@ export default function CustomNavigationTab({state,descriptors,navigation}:any){
                                 style={{flex:1, justifyContent:"center",alignItems:"center",}}
                                 key={index}
                             >
-                                <View style={{justifyContent:"center",alignItems:"center",borderRadius:60,backgroundColor: isFocused?'#3ec08e':'white',width:65,height:65}}>
-                                    <Text style={{textAlign:"center",color: isFocused?'#f7fffe':'#92a4ae',fontWeight:"bold"}}>
+                                <View style={{justifyContent:"center",alignItems:"center",borderRadius:60,backgroundColor: isFocused?tintColor:'white',width:65,height:65}}>
+                                    <Text style={{textAlign:"center",color: isFocused?fontActiveTintColor:fontInAtiveTintColor,fontWeight:"bold"}}>
                                         {label}
                                     </Text>
-                                    <options.tabBarIcon color={isFocused?'#f7fffe':'#92a4ae'}/>
+                                    <options.tabBarIcon color={isFocused?fontActiveTintColor:fontInAtiveTintColor}/>
                                 </View>
                             </TouchableOpacity>
                         );

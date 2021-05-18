@@ -23,6 +23,7 @@ function BottomTabNavigator() {
             tabBarOptions={{
                 activeTintColor:'#3dd79a' ,
                 inactiveTintColor:'#96a8b2'
+                
                 }}>
                 <BottomTab.Screen
                     name="Home"
@@ -56,6 +57,7 @@ function RootNavigator(){
     return (
         <Stack.Navigator screenOptions={{
                 headerShown: false,
+                cardStyle:{backgroundColor:"white"}
             }}>
             <Stack.Screen name="Root" component={BottomTabNavigator}/>
         </Stack.Navigator>
