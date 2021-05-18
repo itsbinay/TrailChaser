@@ -1,6 +1,10 @@
 flask
 flask-pymongo
 python-dotenv
+<<<<<<< HEAD
 pymongo==3.11.3
+=======
+pymongo
+>>>>>>> 1320ab8ef68fceb653e4ef8e41c5c6b0db2ceeb9
 bs4
 lxml

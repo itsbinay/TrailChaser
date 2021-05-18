@@ -1,6 +1,9 @@
 import {userConstants} from '../constants';
 
-const initialState = { user:{}}
+const initialState = { 
+    isLoggedIn: false,
+    user:{}
+}
 
 export function authentication(state=initialState,action){
     switch(action.type){

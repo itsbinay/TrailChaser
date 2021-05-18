@@ -11,6 +11,9 @@ export default function ProfileScreenNavigator() {
     return (
         <ProfileScreenStack.Navigator
             initialRouteName="Root"
+            screenOptions={{
+                headerTitleStyle:{color:"black"}
+            }}
             >
             <ProfileScreenStack.Screen
                 name="Root"

@@ -5,7 +5,7 @@ import {View,Text} from 'react-native';
 function ProfileScreenRoot(){
 
     return (
-        <View>
+        <View style={{flex:1}}>
             <Text>Hello Profile</Text>
         </View>
     )
