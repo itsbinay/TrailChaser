@@ -5,7 +5,7 @@ import {View,Text} from 'react-native';
 function HomeScreenRoot(){
 
     return (
-        <View style={{flex:1}}>
+        <View style={{flex:1,backgroundColor:"white",alignItems:"center"}}>
             <Text>Hello Home</Text>
         </View>
     )
