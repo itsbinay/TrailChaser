@@ -3,7 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 
-import {BottomTabParamList, RootStackParamList} from './types';
+import {BottomTabParamList, RootStackParamList, HomeScreenParamList} from './types';
 
 import ProfileScreenNavigator from './ProfileScreenStack';
 import HomeScreenNavigator from './HomeScreenStack';
@@ -48,6 +48,7 @@ function BottomTabNavigator() {
         </BottomTab.Navigator>
     )
 }
+
 
 const Stack = createStackNavigator<RootStackParamList>();
 
