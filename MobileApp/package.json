@@ -16,6 +16,7 @@
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
     "@types/react-native-snap-carousel": "^3.8.3",
+    "axios": "^0.21.1",
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-fbsdk-next": "^4.2.0",

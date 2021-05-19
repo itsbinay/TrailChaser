@@ -1,5 +1,5 @@
 import Axios from 'axios'
-const API_URL = "http://10.0.2.2:5000"
+const API_URL = "https://10.0.2.2:5000"
 
 export const homeService = {
     fetchAllTrails
@@ -8,12 +8,7 @@ export const homeService = {
 async function fetchAllTrails(){
     
     try{
-        // return await Axios.get(
-        //     'http://10.0.2.2:5000/getTrails')
-        // .then(result=> result.data)
-        // .then(data => {
-        //     return data.result
-        // })
+        console.log("enter")
         const returned_promise = Axios.get(
             API_URL + '/getTrails'
         )
