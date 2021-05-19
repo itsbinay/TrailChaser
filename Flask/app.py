@@ -29,8 +29,8 @@ def get_all_trails():
     output = []
     for trail in trails.find():
         name = trail['name'][5:]
-        output.append({'name' : name, 'location' : trail['location'], 'difficulty': trail['difficulty']})
-    print(output)
+        image = trail['image'][1:-1]
+        output.append({'name' : name, 'location' : trail['location'], 'difficulty': trail['difficulty'], 'image': trail['image']})
     return jsonify({'result': output})
 
 @app.route('/getDifficultTrails', methods = ['POST'])
