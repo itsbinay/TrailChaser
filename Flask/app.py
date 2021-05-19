@@ -30,10 +30,11 @@ def get_all_trails():
     for trail in trails.find():
         name = trail['name'][5:]
         url = ""
-        if trail['image'][0:2] == '("':
-            url = trail['image'][2:-2]
-        elif trail['image'][0] == '(' and trail['image'][1] != '"':
-            url = trail['image'][1:-1]
+        if trail['image']:
+            if trail['image'][0:2] == '("':
+                url = trail['image'][2:-2]
+            elif trail['image'][0] == '(' and trail['image'][1] != '"':
+                url = trail['image'][1:-1]
         output.append({'name' : name, 'location' : trail['location'], 'difficulty': trail['difficulty'], 'image': url})
     return jsonify({'result': output})
 
