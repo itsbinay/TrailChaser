@@ -1,11 +1,13 @@
-from flask import Blueprint
-from .extensions import mongo 
-from .scrapeTrails import trail_scrape
+from flask import Flask
+from extensions import mongo 
+from scrapeTrails import trail_scrape
 from flask import jsonify, request
+import os
 
-main = Blueprint('main', __name__)
+app = Flask(__name__)
 
-@main.route('/updateTrails')
+
+@app.route('/updateTrails')
 def check_trails():
     trails = trail_scrape()
     print(type(trails))
@@ -16,11 +18,11 @@ def check_trails():
                 'duration': trail['duration'], 'difficulty': trail['difficulty']})
     return '<h1>Updated Trail records!</h1>'
 
-@main.route('/homepage')
+@app.route('/homepage')
 def index():
     return '<h1>Welcome To the Home Page!</h1>'
 
-@main.route('/getTrails', methods = ['GET'])
+@app.route('/getTrails', methods = ['GET'])
 def get_all_trails():
     trails = mongo.db.Trails
     output = []
@@ -28,7 +30,7 @@ def get_all_trails():
         output.append({'name' : trail['name'], 'location' : trail['location'], 'difficulty': trail['difficulty']})
     return jsonify({'result': output})
 
-@main.route('/getDifficultTrails', methods = ['POST'])
+@app.route('/getDifficultTrails', methods = ['POST'])
 def get_difficult_trails():
     difficulty = request.form['difficulty']
     trails = mongo.db.Trails
@@ -40,7 +42,7 @@ def get_difficult_trails():
                     'difficulty': trail['difficulty']})
     return jsonify({'result': output})
 
-@main.route('/getLengthTrails', methods = ['POST'])
+@app.route('/getLengthTrails', methods = ['POST'])
 def get_length_trails():
     minLength = request.form['minLength']
     maxLength = request.form['maxLength']
@@ -56,8 +58,14 @@ def get_length_trails():
                     'difficulty': trail['difficulty']})
     return jsonify({'result': output})
 
-# def sample():
-#     user_collection = mongo.db.users
-#     user_collection.insert({'name' : 'Binay'})
-#     user_collection.insert({'name' : 'Kash'})
-#     return '<h1>Added a User!</h1>'
+
+if __name__ == "__main__":
+    # logging.info("Starting application ...")
+    
+    MONGO_URI = 'mongodb+srv://TrailChaser:trailchaser123@trailchaser.gl5n4.mongodb.net/TrailChaser?retryWrites=true&w=majority'
+
+    # MONGO_URI = os.environ.get('MONGO_URI')
+    app.config["MONGO_URI"] = MONGO_URI
+    mongo.init_app(app)
+    
+    app.run(host='0.0.0.0', port=80)
