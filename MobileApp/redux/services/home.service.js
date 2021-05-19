@@ -1,5 +1,6 @@
 import Axios from 'axios'
-const API_URL = "http://10.0.2.2:5000"
+
+const API_URL = require('../../module.config').PROD_URL;
 
 export const homeService = {
     fetchAllTrails

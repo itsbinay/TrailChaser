@@ -27,6 +27,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import rootReducer from './redux/reducers'
 import {Provider} from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
+import { Settings } from 'react-native-fbsdk-next';
 
 const persistConfig = {
   key: 'root',
@@ -37,6 +38,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 const store = createStore(persistedReducer, applyMiddleware(thunk))
 const persistor = persistStore(store)
 
+Settings.initializeSDK()
 
 
 const App = () => {
