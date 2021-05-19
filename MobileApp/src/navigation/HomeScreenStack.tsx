@@ -3,6 +3,7 @@ import React from 'react';
 import {HomeScreenParamList} from './types';
 
 import HomeScreenRoot from '../views/Home/HomeScreenRoot';
+import IndividualTrailScreen from '../views/Home/HomeScreenRoot';
 
 const HomeScreenStack = createStackNavigator<HomeScreenParamList>();
 
@@ -20,6 +21,10 @@ export default function HomeScreenNavigator() {
                 component={HomeScreenRoot}
                 options={{headerTitle:'Home'}}
                 />
+            <HomeScreenStack.Screen
+                name="IndividualTrail"
+                component={IndividualTrailScreen}
+            />
         </HomeScreenStack.Navigator>
     )
 }

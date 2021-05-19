@@ -4,3 +4,4 @@ python-dotenv
 pymongo
 bs4
 lxml
+#'pymongo[srv]'

@@ -11,6 +11,7 @@ export type BottomTabParamList = {
 
 export type HomeScreenParamList = {
     Root: undefined
+    IndividualTrail: undefined;
 }
 
 export type ProfileScreenParamList = {
@@ -19,4 +20,5 @@ export type ProfileScreenParamList = {
 
 export type HistoryScreenParamList = {
     Root: undefined;
+    TravelListDetail: undefined;
 }

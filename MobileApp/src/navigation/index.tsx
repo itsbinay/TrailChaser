@@ -3,7 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 
-import {BottomTabParamList, RootStackParamList} from './types';
+import {BottomTabParamList, RootStackParamList, HomeScreenParamList} from './types';
 
 import ProfileScreenNavigator from './ProfileScreenStack';
 import HomeScreenNavigator from './HomeScreenStack';
@@ -23,6 +23,7 @@ function BottomTabNavigator() {
             tabBarOptions={{
                 activeTintColor:'#3dd79a' ,
                 inactiveTintColor:'#96a8b2'
+                
                 }}>
                 <BottomTab.Screen
                     name="Home"
@@ -49,12 +50,14 @@ function BottomTabNavigator() {
     )
 }
 
+
 const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator(){
     return (
         <Stack.Navigator screenOptions={{
                 headerShown: false,
+                cardStyle:{backgroundColor:"white"}
             }}>
             <Stack.Screen name="Root" component={BottomTabNavigator}/>
         </Stack.Navigator>
