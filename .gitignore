@@ -7,3 +7,4 @@ Flask/pymongoexample/__pycache__/settings.cpython-39.pyc
 package-lock.json
 Flask/__pycache__/extensions.cpython-39.pyc
 Flask/__pycache__/scrapeTrails.cpython-39.pyc
+Flask/__pycache__/app.cpython-39.pyc

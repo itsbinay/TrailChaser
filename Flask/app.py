@@ -1,11 +1,12 @@
 from flask import Flask
-from extensions import mongo 
 from scrapeTrails import trail_scrape
 from flask import jsonify, request
 import os
+from flask_pymongo import PyMongo
 
 app = Flask(__name__)
-
+app.config["MONGO_URI"]=os.environ.get('MONGO_URI')
+mongo = PyMongo(app)
 
 @app.route('/updateTrails')
 def check_trails():
@@ -27,7 +28,9 @@ def get_all_trails():
     trails = mongo.db.Trails
     output = []
     for trail in trails.find():
-        output.append({'name' : trail['name'], 'location' : trail['location'], 'difficulty': trail['difficulty']})
+        name = trail['name'][5:]
+        output.append({'name' : name, 'location' : trail['location'], 'difficulty': trail['difficulty']})
+    print(output)
     return jsonify({'result': output})
 
 @app.route('/getDifficultTrails', methods = ['POST'])

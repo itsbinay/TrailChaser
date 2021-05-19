@@ -151,7 +151,7 @@ function ProfileScreenRoot(){
                 </View>
                 <Modal visible={visible} onDismiss={hideModal}>
                     {
-                        <Login/>
+                        <Login onClose={hideModal}/>
                     }
                 </Modal>
             </Portal>
