@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback, useRef} from 'react';
 import {Text} from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-
 import {homeActions} from '../../../redux/actions'
-import { Card, Searchbar, Button, Title, Paragraph } from 'react-native-paper'
+import {  Card, Searchbar, Button, Title, Paragraph, Portal, Modal, Provider } from 'react-native-paper'
+import { ButtonGroup, Slider } from 'react-native-elements'
 import {Dimensions, StyleSheet, View, ImageBackground, SafeAreaView, ScrollView, FlatList,RefreshControl, TouchableOpacity } from 'react-native';
+import {Picker} from '@react-native-picker/picker';
 
 const styles = StyleSheet.create({
     container: {
@@ -16,6 +17,14 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: 'bold',
+    },
+    modal:{
+        backgroundColor: 'white',
+        alignItems:"center",
+        justifyContent: 'center',
+        flexDirection: "column",
+        flex: 1,
+        padding: 20,
     },
     searchfilterRoot:{
         display:"flex", 
@@ -42,7 +51,6 @@ const styles = StyleSheet.create({
     card:{
         width:"100%",
         flex: 1,
-        
     },
     overlayStyle:{
         alignItems:"flex-start",
@@ -58,6 +66,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: "column",
         marginBottom: 5
+    },
+    diffButton:{
+        backgroundColor: "#597d35"
     }
 });
 function HomeScreenRoot(props:any){
@@ -65,13 +76,17 @@ function HomeScreenRoot(props:any){
     
     const heightTab = useBottomTabBarHeight()
     const dispatch = useDispatch();
-
+    
 
     const [refreshing,setRefreshing] = useState(false);
     const [trails,setTrails] = useState([] as any)
     const [search, setSearchQuery] = useState('')
     const [filterTrails,setFilterTrails] = useState([] as any)
-
+    const buttons = ['Easy', 'Moderate', 'Hard']
+    const [index, setIndex] = useState(null)
+    const [visible, setVisible] = useState(false)
+    const [minValue, setMinValue] = useState(0)
+    const [maxValue, setMaxValue] = useState(0)
     const onRefresh = () =>{
         setRefreshing(true)
         dispatch(homeActions.fetchAllTrails())
@@ -89,6 +104,11 @@ function HomeScreenRoot(props:any){
     const onClickTrail = (trail:any) =>{
         props.navigation.navigate('IndividualTrail')
     }
+    const updateIndex = (value: any) => {
+        setIndex(value)
+        dispatch(homeActions.fetchDiffTrails(value));
+        setFilterTrails(trails)
+    }
     const onSearch = (val:any) => {
         setSearchQuery(val)
 
@@ -104,6 +124,12 @@ function HomeScreenRoot(props:any){
         }
         setFilterTrails(arr)  
     }
+    const showModal = () => setVisible(true)
+    const hideModal = () => {
+        setIndex(null)
+        setVisible(false)
+    }
+    
     const renderItem = ({item, index}:any) => (
         <TouchableOpacity
             style={styles.trailCard}
@@ -117,37 +143,112 @@ function HomeScreenRoot(props:any){
 
                 <Card.Content>
                     <Title>{item.name}</Title>
+                    <Card.Cover source={item.image ? {uri: item.image} : require('./hk.png')} />
                     <Paragraph>Difficulty: {item.difficulty}</Paragraph>
                     <Paragraph>Location: {item.location}</Paragraph>
+                    <Paragraph>Length: {item.length}</Paragraph>
+                    <Paragraph>Duration: {item.duration ? item.duration : "-"}</Paragraph>
                 </Card.Content>
-                <Card.Cover source={item.image ? {uri: item.image} : require('./hk.png')} />
+                
 
             </Card>
         </TouchableOpacity>
     )
+    const valueChange = (value: any) => {
+        setMaxValue(value)
+        dispatch(homeActions.fetchMinMaxLTrails(minValue, value));
+        setFilterTrails(trails)
+    }
     
     return (
-        <View style={{paddingBottom:heightTab}}>
-            <View style={styles.searchfilterRoot}>
-                 <View
-                    style={styles.filterIconContainer}
-                    >
-                    <Button icon="filter-menu">
-                    </Button>
+        <Provider>
+            
+                <View style={{paddingBottom:heightTab}}>
+                    <View style={styles.searchfilterRoot}>
+                         <View
+                            style={styles.filterIconContainer}
+                            >
+                            <Portal>
+                                <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modal}>
+                                    <View style={styles.card}>
+                                        <Title style={{textAlign:'center'}}>Filters</Title>
+                                        <View style = {{flex: 1}}>
+                                            <View style = {{flex: 1}}>
+                                                <Title style={{textAlign:'left'}}>Difficulty</Title>
+                                            </View>
+                                            <View style = {{flex: 2}}>
+                                            <ButtonGroup
+                                                onPress = {updateIndex}
+                                                selectedIndex = {index}
+                                                buttons = {buttons}
+                                                selectedButtonStyle = {styles.diffButton}
+                                            />
+                                            </View>
+                                        </View>
+                                        <View style = {{flex: 1}}>
+                                            <Title style={{textAlign:'center'}}>Minimum Trail Length</Title>
+                                            <Picker
+                                              dropdownIconColor = {"#597d35"}
+                                              selectedValue={minValue}
+                                              onValueChange={(itemValue:any) =>
+                                                setMinValue(itemValue)
+                                              }>
+                                              <Picker.Item label="0" value="0" />
+                                              <Picker.Item label="1" value="1" />
+                                              <Picker.Item label="2" value="2" />
+                                              <Picker.Item label="3" value="3" />
+                                              <Picker.Item label="4" value="4" />
+                                              <Picker.Item label="5" value="5" />
+                                              <Picker.Item label="6" value="6" />
+                                              <Picker.Item label="7" value="7" />
+                                              <Picker.Item label="8" value="8" />
+                                              <Picker.Item label="9" value="9" />
+                                              <Picker.Item label="10" value="10" />
+                                              <Picker.Item label="11" value="11" />
+
+                                            </Picker>
+                                        </View>
+                                        <View style = {{flex: 1}}>
+                                            <Title style={{textAlign:'center'}}>Maximum Trail Length</Title>
+                                            <Picker
+                                              dropdownIconColor = {"#597d35"}
+                                              selectedValue={maxValue}
+                                              onValueChange={valueChange}>
+                                              <Picker.Item label="0" value="0" />
+                                              <Picker.Item label="1" value="1" />
+                                              <Picker.Item label="2" value="2" />
+                                              <Picker.Item label="3" value="3" />
+                                              <Picker.Item label="4" value="4" />
+                                              <Picker.Item label="5" value="5" />
+                                              <Picker.Item label="6" value="6" />
+                                              <Picker.Item label="7" value="7" />
+                                              <Picker.Item label="8" value="8" />
+                                              <Picker.Item label="9" value="9" />
+                                              <Picker.Item label="10" value="10" />
+                                              <Picker.Item label="11" value="11" />
+                                            </Picker>
+                                        </View>
+                                    </View>
+                                </Modal>
+                            </Portal>
+                            <Button icon="filter-menu" onPress = {showModal}>
+                            </Button>
+                        </View>
+                        <Searchbar
+                            placeholder="Search for a trail"
+                            onChangeText={onSearch}
+                            inputStyle={{color:"black"}}
+                            value={search}
+                            />
+                    </View>
+                        <FlatList
+                            data = {filterTrails}
+                            renderItem = {renderItem}
+                            keyExtractor = {(item, index) => index.toString()}
+                        />
                 </View>
-                <Searchbar
-                    placeholder="Search for a trail"
-                    onChangeText={onSearch}
-                    inputStyle={{color:"black"}}
-                    value={search}
-                    />
-            </View>
-                <FlatList
-                    data = {filterTrails}
-                    renderItem = {renderItem}
-                    keyExtractor = {(item, index) => index.toString()}
-                />
-        </View>
+            
+        </Provider>
     )
 }
 

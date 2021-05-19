@@ -3,7 +3,7 @@ import React from 'react';
 import {HomeScreenParamList} from './types';
 
 import HomeScreenRoot from '../views/Home/HomeScreenRoot';
-import IndividualTrailScreen from '../views/Home/HomeScreenRoot';
+import IndividualTrailScreen from '../views/Home/IndividualTrailScreen';
 
 const HomeScreenStack = createStackNavigator<HomeScreenParamList>();
 

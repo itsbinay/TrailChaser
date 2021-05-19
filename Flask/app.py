@@ -47,13 +47,14 @@ def get_difficult_trails():
     output = []
     for trail in trails.find():
         if trail['difficulty'] == difficulty:
+            name = trail['name'][5:]
             url = ""
             if trail['image']:
                 if trail['image'][0:2] == '("':
                     url = trail['image'][2:-2]
                 elif trail['image'][0] == '(' and trail['image'][1] != '"':
                     url = trail['image'][1:-1]
-            output.append({'name' : trail['name'], 'location' : trail['location'], \
+            output.append({'name' : name, 'location' : trail['location'], \
                 'length': trail['length'], 'duration': trail['duration'], 'image': url, \
                     'difficulty': trail['difficulty']})
     return jsonify({'result': output})
@@ -69,13 +70,14 @@ def get_length_trails():
     for trail in trails.find():
         length = float(trail['length'].split(" ")[0])
         if length >= minLen and length <= maxLen:
+            name = trail['name'][5:]
             url = ""
             if trail['image']:
                 if trail['image'][0:2] == '("':
                     url = trail['image'][2:-2]
                 elif trail['image'][0] == '(' and trail['image'][1] != '"':
                     url = trail['image'][1:-1]
-            output.append({'name' : trail['name'], 'location' : trail['location'], \
+            output.append({'name' : name, 'location' : trail['location'], \
                 'length': trail['length'], 'duration': trail['duration'], 'image': url, \
                     'difficulty': trail['difficulty']})
     return jsonify({'result': output})
