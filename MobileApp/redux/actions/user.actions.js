@@ -4,7 +4,8 @@ import { userService } from '../services';
 export const userActions = {
     register,
     login,
-    fbloginreg
+    fbloginreg,
+    logout
 }
 
 function fbloginreg(data,imageurl){
@@ -62,4 +63,13 @@ function login(data){
     function request() {return {type: userConstants.LOGIN_REQUEST }}
     function success(data) { return { type: userConstants.LOGIN_SUCCESS, payload: data } }
     function failure() { return { type: userConstants.LOGIN_FAILURE} }
+}
+
+function logout(){
+    return dispatch =>{
+        dispatch(request())
+    }
+
+    function request() {return {type: userConstants.LOGOUT_REQUEST }}
+   
 }
