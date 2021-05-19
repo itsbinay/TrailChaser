@@ -11,6 +11,7 @@ export type BottomTabParamList = {
 
 export type HomeScreenParamList = {
     Root: undefined
+    IndividualTrail: undefined;
 }
 
 export type ProfileScreenParamList = {
