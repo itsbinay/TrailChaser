@@ -28,8 +28,9 @@ def get_all_trails():
     trails = mongo.db.Trails
     output = []
     for trail in trails.find():
-        output.append({'name' : trail['name'], 'location' : trail['location'], 'difficulty': trail['difficulty']})
-   # print("output:",output)
+        name = trail['name'][5:]
+        output.append({'name' : name, 'location' : trail['location'], 'difficulty': trail['difficulty']})
+    print(output)
     return jsonify({'result': output})
 
 @app.route('/getDifficultTrails', methods = ['POST'])
