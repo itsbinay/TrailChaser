@@ -3,7 +3,8 @@ import {homeConstants} from '../constants';
 export const homeActions = {
     fetchAllTrails,
     fetchDiffTrails,
-    fetchMinMaxLTrails
+    fetchMinMaxLTrails,
+    selectTrail
 };
 //string: 15.8km
 function fetchAllTrails(){
@@ -27,6 +28,12 @@ function fetchAllTrails(){
     function failure() { return { type: homeConstants.GET_TRAILS_FAILURE} }
 }
 
+function selectTrail(trail){
+    return dispatch=>{
+        dispatch(success(trail))
+    }
+    function success(data) {return {type:homeConstants.SELECT_TRAIL,payload:data}}
+}
 function fetchDiffTrails(value){
     let difficulty = ""
     if(value === 0){

@@ -103,6 +103,7 @@ function HomeScreenRoot(props:any){
     }, []);
 
     const onClickTrail = (trail:any) =>{
+        dispatch(homeActions.selectTrail(trail))
         props.navigation.navigate('IndividualTrail')
     }
     useEffect(()=>{
@@ -255,7 +256,7 @@ function HomeScreenRoot(props:any){
                                     </View>
                                 </Modal>
                             </Portal>
-                            <Button icon="filter-menu" onPress = {showModal}>
+                            <Button icon="filter-menu" onPress = {showModal} labelStyle={{color: "#597d35"}}>
                             </Button>
                         </View>
                         <Searchbar
@@ -284,35 +285,3 @@ const mapStateToProps = (state: any) => {
 
 
 export default connect(mapStateToProps)(HomeScreenRoot);
-
-/** 
-// {
-                //     trails !== undefined ?
-                //     filterTrails.map((e:any,index:number)=>{
-                //         return <TouchableOpacity
-                //                 style={styles.trailCard}
-                //                 key={index}
-                //                 onPress={()=>onClickTrail(e)}
-                //                 >  
-                //                 <Card    
-                //                 style={styles.card}
-                //                 >
-                //                 <Card.Title title = {e.name}> </Card.Title>
-
-                //             </Card>
-                //         </TouchableOpacity>
-
-                //     }):
-                //     <Text>Hello</Text>
-                // }
-             </ScrollView> 
-     <ScrollView
-                contentContainerStyle={styles.container}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                        />
-                }
-            > 
- */

@@ -1,6 +1,7 @@
 import {homeConstants} from '../constants';
 const initialState = {
-    trails: []
+    trails: [],
+    selectedTrail: {}
 }
 
 export function home(state = initialState, action){
@@ -23,6 +24,11 @@ export function home(state = initialState, action){
         case homeConstants.GET_TRAILS_FAILURE:
             return {
                 ...state
+            }
+        case homeConstants.SELECT_TRAIL:
+            return {
+                ...state,
+                selectedTrail: action.payload
             }
         default:
             return state
