@@ -1,36 +1,49 @@
 import React from 'react';
 import {View,Text,TouchableOpacity,Image, Dimensions} from 'react-native';
 import {LoginManager,AccessToken,Profile} from "react-native-fbsdk-next";
+import {useDispatch} from 'react-redux'
+import {userActions} from '../../redux/actions';
+
 
 const fblogo = require('./fblogo.png')
 const width = Dimensions.get('window').width
+
 function FacebookLogin(props:any){
+
+    const dispatch = useDispatch();
 
     const onClickLogin = () =>{
         LoginManager.logInWithPermissions(["public_profile"]).then(
-            function(result){
+            function(result:any){
                 if(result.isCancelled){
                     console.log("login cancelled");
                 }else{
-
+                    console.log("success")
+                    Profile.getCurrentProfile().then(
+                        function(currentProfile:any){
+                            if(currentProfile){
+                                const profileImageurl = currentProfile.imageURL
+                                const firstName = currentProfile.firstName
+                                const lastName = currentProfile.lastName
+                                const userId = currentProfile.userID
+                                
+                                const user = {
+                                    'username': userId,
+                                    'firstname':firstName,
+                                    'lastname': lastName,
+                                    'type': 'facebook'
+                                }
+                                dispatch(userActions.fbloginreg(user,profileImageurl))
+                            }
+                        }
+                    )
                 }
             },
-            function(error){
+            function(error:any){
                 console.log("Login fail with error: "+error)
             }
         )
-        Profile.getCurrentProfile().then(
-            function(currentProfile){
-                if(currentProfile){
-                    const profileImageurl = currentProfile.imageURL
-                    const firstName = currentProfile.firstName
-                    const lastName = currentProfile.lastName
-                    const userId = currentProfile.userID
-                    
-                    console.log("profile:",currentProfile)
-                }
-            }
-        )
+
     }
     return(
         <TouchableOpacity

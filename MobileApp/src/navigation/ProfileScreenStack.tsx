@@ -13,7 +13,7 @@ function ProfileScreenNavigator(props:any) {
 
     return (
         <ProfileScreenStack.Navigator
-            initialRouteName={props.auth.isLoggedIn?"Root":"Profile2"}
+            initialRouteName={"Root"}
             screenOptions={{
                 headerTitleStyle:{color:"black"},
                 headerShown: props.auth.isLoggedIn

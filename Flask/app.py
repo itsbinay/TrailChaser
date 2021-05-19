@@ -131,6 +131,39 @@ def loginUser():
         return make_response({"result":returndict},200)
 
     return make_response({"result":"Incorrect password"},404)
+
+@app.route('/fbreglogin',methods = ['POST'])
+def loginregfb():
+    username = request.json['username']
+    firstname = request.json['firstname']
+    lastname = request.json['lastname']
+    usertype = request.json['type']
+    
+    exists = mongo.db.users.find_one({'username':username})
+    if exists is None:
+        mongo.db.users.insert_one({'username':username,"firstname":firstname,"lastname":lastname,'type':usertype})
+        user = mongo.db.users.find_one({'username':username})
+        returndict= {}
+        for key in dict.keys(user):
+            if key == "password":
+                continue
+            if key == '_id':
+                returndict[key] = str(user[key])
+            else:
+                returndict[key] = user[key]
+        return make_response({"result":returndict},200)
+    else:
+        returndict = {}
+        for key in dict.keys(exists):
+            if key == "password":
+                continue
+            if key == '_id':
+                returndict[key] = str(exists[key])
+            else:
+                returndict[key] = exists[key]
+
+        return make_response({"result":returndict},200)
+        
 if __name__ == "__main__":
     # logging.info("Starting application ...")
     
