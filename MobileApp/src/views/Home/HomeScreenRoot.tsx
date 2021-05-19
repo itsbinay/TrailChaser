@@ -117,6 +117,8 @@ function HomeScreenRoot(props:any){
 
                 <Card.Content>
                     <Title>{item.name}</Title>
+                    <Paragraph>Difficulty: {item.difficulty}</Paragraph>
+                    <Paragraph>Location: {item.location}</Paragraph>
                 </Card.Content>
                 <Card.Cover source={item.image ? {uri: item.image} : require('./hk.png')} />
 
