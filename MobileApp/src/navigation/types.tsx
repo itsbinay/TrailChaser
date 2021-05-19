@@ -20,4 +20,5 @@ export type ProfileScreenParamList = {
 
 export type HistoryScreenParamList = {
     Root: undefined;
+    TravelListDetail: undefined;
 }
