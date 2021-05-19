@@ -16,6 +16,7 @@ export type HomeScreenParamList = {
 
 export type ProfileScreenParamList = {
     Root: undefined;
+    Profile2: undefined;
 }
 
 export type HistoryScreenParamList = {

@@ -1,7 +1,11 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import {View,Text, Dimensions, StyleSheet, Platform, Image,} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {Button,Modal,Portal,Provider} from 'react-native-paper'
+import {connect} from 'react-redux';
+import { StackActions } from '@react-navigation/routers';
+import { useNavigation } from '@react-navigation/native';
+
 import Login from './Login'
 import Registration from './Registration';
 
@@ -48,10 +52,19 @@ const styles = StyleSheet.create({
 
   const {width: screenWidth} = Dimensions.get('window');
 
-function ProfileScreenRoot(){
+function ProfileScreenRoot(props:any){
     const defaultImages = [
         image1,image2,image3,image4
     ]
+
+    const navigation = useNavigation();
+
+    useEffect(()=>{
+        if(props.auth.isLoggedIn){
+            navigation.dispatch(StackActions.replace('Profile2'))
+        }
+    },[props.auth])
+
     const defaultText = [
         {
             title:"Keep track of your favorite trails",
@@ -98,7 +111,12 @@ function ProfileScreenRoot(){
         );
     }
 
-
+    // if(props.auth.isLoggedIn){
+    //     return (
+    //         <Profile/>
+    //     )
+    // }
+    
     return (
         <Provider>
             <Portal>
@@ -170,4 +188,9 @@ function ProfileScreenRoot(){
     )
 }
 
-export default ProfileScreenRoot;
+const mapStateToProps = function(state:any){
+    return {
+        auth: state.authentication
+    }
+}
+export default connect(mapStateToProps)(ProfileScreenRoot);
