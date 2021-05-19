@@ -4,7 +4,7 @@ import { connect, useDispatch } from 'react-redux';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 import {homeActions} from '../../../redux/actions'
-import { Card, Searchbar, Button } from 'react-native-paper'
+import { Card, Searchbar, Button, Title, Paragraph } from 'react-native-paper'
 import {Dimensions, StyleSheet, View, ImageBackground, SafeAreaView, ScrollView, FlatList,RefreshControl, TouchableOpacity } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         backgroundColor:"white"
     },
     filterIconContainer:{
-        width:"15%",
+        width:"12%",
         alignItems:"center",
     },
     searchContainerStyling: {
@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
     },
     card:{
         width:"100%",
-        flex: 1
+        flex: 1,
+        
     },
     overlayStyle:{
         alignItems:"flex-start",
@@ -54,7 +55,9 @@ const styles = StyleSheet.create({
     trailCard:{
         width:"100%",
         alignItems:"center",
-        justifyContent: 'center'
+        justifyContent: 'center',
+        flexDirection: "column",
+        marginBottom: 5
     }
 });
 function HomeScreenRoot(props:any){
@@ -111,7 +114,11 @@ function HomeScreenRoot(props:any){
             style={styles.card}
             key = {index}
             >
-                <Card.Title title = {item.name} key={index}> </Card.Title>
+
+                <Card.Content>
+                    <Title>{item.name}</Title>
+                </Card.Content>
+                <Card.Cover source={item.image ? {uri: item.image} : require('./hk.png')} />
 
             </Card>
         </TouchableOpacity>
