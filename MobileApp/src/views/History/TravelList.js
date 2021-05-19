@@ -4,11 +4,9 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { tutorial2Spech } from './theme';
 const {ITEM_WIDTH, ITEM_HEIGHT, RADIUS, SPACING, FULL_SIZE} = tutorial2Spech; 
-import * as React from 'react';
-import {SharedElement} from 'react-navigation-shared-element';
+import React from 'react';
 
-function HistoryScreenRoot({navigation}: {navigation: any}){
-
+export default function TravelList({navigation}) {
     const scrollx = React.useRef(new Animated.Value(0)).current;
     return (
         <SafeAreaView style={{flex: 1}}>
@@ -51,33 +49,12 @@ function HistoryScreenRoot({navigation}: {navigation: any}){
                             }]}
                         />
                     </View>
-                    <SharedElement 
-                    id={`item.${item.key}.photo`} 
-                    style={[StyleSheet.absoluteFillObject]}>
-                        <View style={[
-                            StyleSheet.absoluteFillObject,
-                            {overflow: 'hidden', borderRadius: RADIUS},
-                        ]}>
-                            <Animated.Image
-                                source={{uri: item.image}}
-                                style={[
-                                    StyleSheet.absoluteFillObject,
-                                    {
-                                        resizeMode: 'cover',
-                                        transform: [{scale}],
-                                    },
-                                ]}
-                                />
-                        </View>
-                    </SharedElement>
-                    <SharedElement id={`item.${item.key}.location`}>
                     <Animated.Text style={[styles.location, {
                         transform: [{translateX}],
                     }]}>{item.location}</Animated.Text>
-                    </SharedElement>
                     <View style={styles.days}>
                         <Text style={styles.daysValue}>{item.numberOfDays}</Text>
-                        <Text style={styles.daysLabel}>days ago</Text>
+                        <Text style={styles.daysLabel}>days</Text>
                     </View>
                     </TouchableOpacity>
                 }}
@@ -85,6 +62,7 @@ function HistoryScreenRoot({navigation}: {navigation: any}){
         </SafeAreaView>
     )
 }
+
 
 const styles = StyleSheet.create({
     itemContainer: {
@@ -99,16 +77,16 @@ const styles = StyleSheet.create({
         width: ITEM_WIDTH * 0.8,
         textTransform: 'uppercase',
         position: 'absolute',
-        top: SPACING * 2,
-        left: SPACING * 2,
+        top: SPACING,
+        left: SPACING,
     },
     days: {
         position: 'absolute',
-        bottom: SPACING*2,
-        left: SPACING*2,
-        width: 70,
-        height: 70,
-        borderRadius: 35,
+        bottom: SPACING,
+        left: SPACING,
+        width: 52,
+        height: 52,
+        borderRadius: 26,
         backgroundColor: 'tomato',
         justifyContent: 'center',
         alignItems: 'center',
@@ -116,13 +94,10 @@ const styles = StyleSheet.create({
     daysValue: {
         fontWeight: '800',
         color: '#fff', 
-        fontSize: 30,
+        fontSize: 18,
     },
     daysLabel: {
         color: '#fff',
         fontSize: 10,
-        bottom: 5
     }
 })
-
-export default HistoryScreenRoot;
