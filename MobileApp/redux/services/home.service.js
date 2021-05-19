@@ -1,6 +1,7 @@
 import Axios from 'axios'
-const API_URL = "http://10.0.2.2:5000"
 
+const API_URL = require('../../module.config').PROD_URL;
+const API_URL_DEV = require('../../module.config').DEV_URL;
 export const homeService = {
     fetchAllTrails
 }
@@ -8,21 +9,16 @@ export const homeService = {
 async function fetchAllTrails(){
     
     try{
-        // return await Axios.get(
-        //     'http://10.0.2.2:5000/getTrails')
-        // .then(result=> result.data)
-        // .then(data => {
-        //     return data.result
-        // })
-        const returned_promise = Axios.get(
-            API_URL + '/getTrails'
-        )
-        console.log("ERROR")
+        console.log("enter:")
+        const returned_promise = Axios.get(API_URL + '/getTrails')
+        
         const response = await returned_promise
+        
         const result = response.data.result
+        console.log("output: ", result.slice(0,2))
         return result
 
     }catch (err) {
         console.log("err", err)
-      }
+    }
 }
