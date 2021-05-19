@@ -1,6 +1,12 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import {View,Text,Dimensions,Image, StyleSheet} from 'react-native'
 import {Button, IconButton,TextInput} from 'react-native-paper'
+import { useNavigation } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/routers';
+
+import {userActions} from '../../../redux/actions';
+
+import {connect,useDispatch} from 'react-redux';
 
 const logo1 = require('../../logo.png')
 import FacebookLogin from '../../components/FacebookLogin';
@@ -24,13 +30,40 @@ const styles = StyleSheet.create({
     }
 })
 function Login(props:any){
+    const navigation = useNavigation();
+
+    const [username,setUsername] = useState('')
+    const [password,setPassword] = useState('')
+
+    const dispatch = useDispatch()
+
+    useEffect(()=>{
+        if(props.auth.isLoggedIn){
+            props.onClose();
+            navigation.dispatch(StackActions.replace('Profile2'))
+        }
+    },[props.auth])
 
     const onClickClose = () =>{
         props.onClose();
     }
 
     const onPressLogin = () =>{
+        if(username!=='' && password!==''){
+            const user = {
+                'username':username,
+                'password':password
+            }
+            dispatch(userActions.login(user))
+        }
+    }
 
+    const onChangeUsername = (e:any) =>{
+        setUsername(e)
+    }
+
+    const onChangePassword = (e:any)=>{
+        setPassword(e)
     }
     return(
         <View style={{height:height,width:width,backgroundColor:"white",display:"flex",alignItems:"center"}}>
@@ -60,6 +93,8 @@ function Login(props:any){
                     mode="outlined"
                     selectionColor="#597d35"
                     theme={{colors:{primary:"#597d35"}}}
+                    value={username}
+                    onChangeText={onChangeUsername}
                     />
                 <View style={{padding:5}}/>  
                 <TextInput
@@ -68,6 +103,8 @@ function Login(props:any){
                     placeholder="Password"
                     selectionColor="#597d35"
                     secureTextEntry={true}
+                    value={password}
+                    onChangeText={onChangePassword}
                     theme={{colors:{primary:"#597d35"}}}
                     />    
             </View>  
@@ -89,9 +126,13 @@ function Login(props:any){
             <View style={{padding:10}}/>  
             <FacebookLogin/>
             <View style={{padding:10}}/>
-            <GoogleLogin/>
         </View>
     )
 }
 
-export default Login;
+const mapStateToProps = function(state:any){
+    return {
+        auth: state.authentication
+    }
+}
+export default connect(mapStateToProps)(Login);

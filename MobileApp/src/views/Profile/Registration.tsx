@@ -1,7 +1,10 @@
-import React,{useState} from 'react';
+import { StackActions } from '@react-navigation/routers';
+import React,{useEffect, useState} from 'react';
 import {View,Text,StyleSheet,Dimensions,Image,ScrollView} from 'react-native';
-
 import {Button, IconButton,TextInput} from 'react-native-paper'
+import { useNavigation } from '@react-navigation/native';
+import {useDispatch,connect} from 'react-redux';
+import {userActions} from '../../../redux/actions';
 
 
 const logo1 = require('../../logo.png')
@@ -25,7 +28,11 @@ const styles = StyleSheet.create({
         flex:1
     }
 })
+
 function Registration(props:any){
+
+    const dispatch = useDispatch();
+    const navigation = useNavigation()
 
     const [firstName,setFirstName] = useState("")
     const [lastName,setLastName] = useState("")
@@ -51,12 +58,27 @@ function Registration(props:any){
         props.onClose();
     }
 
+    useEffect(()=>{
+        if(props.auth.isLoggedIn){
+            props.onClose();
+            navigation.dispatch(StackActions.replace('Profile2'))
+        }
+    },[props.auth])
     const onPressRegister = () =>{
         if(firstName!== '' 
             && lastName!==''
             && emailAddress!==''
             && password!==''){
-                
+                const user = {
+                    'username': emailAddress,
+                    'firstname':firstName,
+                    'lastname': lastName,
+                    'password': password,
+                    'type': 'normal'
+                }
+                dispatch(userActions.register(user))
+        }else{
+            console.log("Please fill in all of the fields")
         }
     }
     return(
@@ -139,11 +161,15 @@ function Registration(props:any){
                 </View>
                 <View style={{padding:10}}/>  
                 <FacebookLogin/>
-                <View style={{padding:10}}/>
-                <GoogleLogin/>
             </ScrollView>
         </View>
     )
 }
 
-export default Registration;
+const mapStateToProps = function(state:any){
+    return {
+        auth: state.authentication,
+    }
+}
+
+export default connect(mapStateToProps)(Registration);

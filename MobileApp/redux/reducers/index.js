@@ -5,7 +5,8 @@ import {authentication} from './authentication.reducer';
 import {home} from './home.reducer';
 
 const rootReducer = combineReducers({
-    home
+    home,
+    authentication
 })
 
 export default rootReducer;
