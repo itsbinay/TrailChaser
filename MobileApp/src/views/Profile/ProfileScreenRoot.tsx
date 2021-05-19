@@ -3,6 +3,7 @@ import {View,Text, Dimensions, StyleSheet, Platform, Image,} from 'react-native'
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {Button,Modal,Portal,Provider} from 'react-native-paper'
 import Login from './Login'
+import Registration from './Registration';
 
 const image1 = require('./images/hiking1.jpg')
 const image2 = require('./images/hiking2.jpg')
@@ -73,14 +74,16 @@ function ProfileScreenRoot(){
     const [activeSlide,setActiveSlide] = useState(0)
     const [currentImage,setCurrentImage] = useState(defaultImages)
     const [visible,setVisible] = useState(false);
-
+    const [isLogin,setIsLogin] = useState(false);
     const hideModal = () => setVisible(false);
 
     const onPressLogin = () =>{
+        setIsLogin(true)
         setVisible(true)
     }
     const onPressSignUp = () =>{
-
+        setIsLogin(false)
+        setVisible(true)
     }
 
 
@@ -112,6 +115,7 @@ function ProfileScreenRoot(){
                             data={currentImage}
                             enableMomentum={false}
                             loop={true}
+                            autoplay={true}
                             lockScrollWhileSnapping={true}
                             onSnapToItem={(index)=>setActiveSlide(index)}
                         />
@@ -143,7 +147,12 @@ function ProfileScreenRoot(){
                             Log in
                         </Button>
                         <View style={{padding:10}}/>
-                        <Button mode="contained" color="#597d35" style={{display:"flex",flex:1,padding:3}}>
+                        <Button 
+                            mode="contained" 
+                            color="#597d35" 
+                            style={{display:"flex",flex:1,padding:3}}
+                            onPress={onPressSignUp}
+                            >
                             Sign up
                         </Button>
                         <View style={{padding:10}}/>
@@ -151,7 +160,9 @@ function ProfileScreenRoot(){
                 </View>
                 <Modal visible={visible} onDismiss={hideModal}>
                     {
+                        isLogin?
                         <Login onClose={hideModal}/>
+                        :<Registration onClose={hideModal}/>
                     }
                 </Modal>
             </Portal>
