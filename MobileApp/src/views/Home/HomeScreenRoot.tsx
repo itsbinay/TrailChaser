@@ -83,6 +83,7 @@ function HomeScreenRoot(props:any){
     const [search, setSearchQuery] = useState('')
     const [filterTrails,setFilterTrails] = useState([] as any)
     const buttons = ['Easy', 'Moderate', 'Hard']
+    const [currentFilter, setCurrentFilter] = useState(null)
     const [index, setIndex] = useState(null)
     const [visible, setVisible] = useState(false)
     const [minValue, setMinValue] = useState(0)
@@ -104,11 +105,28 @@ function HomeScreenRoot(props:any){
     const onClickTrail = (trail:any) =>{
         props.navigation.navigate('IndividualTrail')
     }
-    const updateIndex = (value: any) => {
-        setIndex(value)
-        dispatch(homeActions.fetchDiffTrails(value));
-        setFilterTrails(trails)
-    }
+    useEffect(()=>{
+        if(currentFilter === null){
+            setFilterTrails(trails)
+        }else{
+            console.log("here: ", currentFilter)
+            let difficulty = ''
+            if(currentFilter === 0){
+                difficulty = 'easy'
+            }else if(currentFilter === 1){
+                difficulty = 'moderate'
+            }else{
+                difficulty = 'hard'
+            }
+            let filterTrails = []
+            for(let i=0;i<trails.length;i++){
+                if(trails[i].difficulty === difficulty){
+                    filterTrails.push(trails[i])
+                }
+            }
+            setFilterTrails(filterTrails);
+        }
+    },[currentFilter])
     const onSearch = (val:any) => {
         setSearchQuery(val)
 
@@ -126,7 +144,6 @@ function HomeScreenRoot(props:any){
     }
     const showModal = () => setVisible(true)
     const hideModal = () => {
-        setIndex(null)
         setVisible(false)
     }
     
@@ -159,7 +176,9 @@ function HomeScreenRoot(props:any){
         dispatch(homeActions.fetchMinMaxLTrails(minValue, value));
         setFilterTrails(trails)
     }
-    
+    const removeFilter = () => {
+        setCurrentFilter(null)
+    }
     return (
         <Provider>
             
@@ -178,14 +197,14 @@ function HomeScreenRoot(props:any){
                                             </View>
                                             <View style = {{flex: 2}}>
                                             <ButtonGroup
-                                                onPress = {updateIndex}
-                                                selectedIndex = {index}
+                                                onPress = {setCurrentFilter}
+                                                selectedIndex = {currentFilter}
                                                 buttons = {buttons}
                                                 selectedButtonStyle = {styles.diffButton}
                                             />
                                             </View>
                                         </View>
-                                        <View style = {{flex: 1}}>
+                                        <View style = {{flex: 2}}>
                                             <Title style={{textAlign:'center'}}>Minimum Trail Length</Title>
                                             <Picker
                                               dropdownIconColor = {"#597d35"}
@@ -208,7 +227,7 @@ function HomeScreenRoot(props:any){
 
                                             </Picker>
                                         </View>
-                                        <View style = {{flex: 1}}>
+                                        <View style = {{flex: 2}}>
                                             <Title style={{textAlign:'center'}}>Maximum Trail Length</Title>
                                             <Picker
                                               dropdownIconColor = {"#597d35"}
@@ -227,6 +246,11 @@ function HomeScreenRoot(props:any){
                                               <Picker.Item label="10" value="10" />
                                               <Picker.Item label="11" value="11" />
                                             </Picker>
+                                        </View>
+                                        <View style = {{flex: 0.5}}>
+                                        <Button icon="filter-remove" onPress = {removeFilter} labelStyle={{color: "#597d35"}}>
+                                            <Text style = {{color: "#597d35"}}>Remove Filter</Text>
+                                        </Button>
                                         </View>
                                     </View>
                                 </Modal>
