@@ -85,12 +85,12 @@ const TravelListDetail = ( {navigation, route}) => {
                             backgroundColor: 'white', 
                             padding: SPACING, 
                             width: width * 0.33, 
-                            height: width * 0.5, 
+                            height: width * 0.4, 
                             marginRight: SPACING}}
                             >
                             <Image 
                             source={{uri: 'https://images.unsplash.com/photo-1550626847-1df7517db9cb?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8d2F0ZXIlMjBuYXR1cmV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=60'}} 
-                            style={{width:'100%', height: '70%', resizeMode: 'cover'}}
+                            style={{width:'100%', height: '70%', resizeMode: 'cover', marginBottom: SPACING}}
                             />
                             <Text>Activity #{item + 1}</Text>
                         </Animatable.View>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     },
 })
 
-TravelListDetail.SharedElements = (route, otherRoute, showing) => {
+TravelListDetail.SharedElements = (route) => {
     const {item} = route.params;
     return [
         {

@@ -1,8 +1,13 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import {View,Text, Dimensions, StyleSheet, Platform, Image,} from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {Button,Modal,Portal,Provider} from 'react-native-paper'
+import {connect} from 'react-redux';
+import { StackActions } from '@react-navigation/routers';
+import { useNavigation } from '@react-navigation/native';
+
 import Login from './Login'
+import Registration from './Registration';
 
 const image1 = require('./images/hiking1.jpg')
 const image2 = require('./images/hiking2.jpg')
@@ -47,10 +52,19 @@ const styles = StyleSheet.create({
 
   const {width: screenWidth} = Dimensions.get('window');
 
-function ProfileScreenRoot(){
+function ProfileScreenRoot(props:any){
     const defaultImages = [
         image1,image2,image3,image4
     ]
+
+    const navigation = useNavigation();
+
+    useEffect(()=>{
+        if(props.auth.isLoggedIn){
+            navigation.dispatch(StackActions.replace('Profile2'))
+        }
+    },[props.auth])
+
     const defaultText = [
         {
             title:"Keep track of your favorite trails",
@@ -73,14 +87,16 @@ function ProfileScreenRoot(){
     const [activeSlide,setActiveSlide] = useState(0)
     const [currentImage,setCurrentImage] = useState(defaultImages)
     const [visible,setVisible] = useState(false);
-
+    const [isLogin,setIsLogin] = useState(false);
     const hideModal = () => setVisible(false);
 
     const onPressLogin = () =>{
+        setIsLogin(true)
         setVisible(true)
     }
     const onPressSignUp = () =>{
-
+        setIsLogin(false)
+        setVisible(true)
     }
 
 
@@ -95,7 +111,12 @@ function ProfileScreenRoot(){
         );
     }
 
-
+    // if(props.auth.isLoggedIn){
+    //     return (
+    //         <Profile/>
+    //     )
+    // }
+    
     return (
         <Provider>
             <Portal>
@@ -112,6 +133,7 @@ function ProfileScreenRoot(){
                             data={currentImage}
                             enableMomentum={false}
                             loop={true}
+                            autoplay={true}
                             lockScrollWhileSnapping={true}
                             onSnapToItem={(index)=>setActiveSlide(index)}
                         />
@@ -143,7 +165,12 @@ function ProfileScreenRoot(){
                             Log in
                         </Button>
                         <View style={{padding:10}}/>
-                        <Button mode="contained" color="#597d35" style={{display:"flex",flex:1,padding:3}}>
+                        <Button 
+                            mode="contained" 
+                            color="#597d35" 
+                            style={{display:"flex",flex:1,padding:3}}
+                            onPress={onPressSignUp}
+                            >
                             Sign up
                         </Button>
                         <View style={{padding:10}}/>
@@ -151,7 +178,9 @@ function ProfileScreenRoot(){
                 </View>
                 <Modal visible={visible} onDismiss={hideModal}>
                     {
+                        isLogin?
                         <Login onClose={hideModal}/>
+                        :<Registration onClose={hideModal}/>
                     }
                 </Modal>
             </Portal>
@@ -159,4 +188,9 @@ function ProfileScreenRoot(){
     )
 }
 
-export default ProfileScreenRoot;
+const mapStateToProps = function(state:any){
+    return {
+        auth: state.authentication
+    }
+}
+export default connect(mapStateToProps)(ProfileScreenRoot);

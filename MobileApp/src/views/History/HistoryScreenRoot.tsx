@@ -6,13 +6,23 @@ import { tutorial2Spech } from './theme';
 const {ITEM_WIDTH, ITEM_HEIGHT, RADIUS, SPACING, FULL_SIZE} = tutorial2Spech; 
 import * as React from 'react';
 import {SharedElement} from 'react-navigation-shared-element';
+// import { Card } from 'react-native-shadow-cards';
+import CardButton from '@paraboly/react-native-card-button';
+import LinearGradient from 'react-native-linear-gradient';
+
 
 function HistoryScreenRoot({navigation}: {navigation: any}){
 
     const scrollx = React.useRef(new Animated.Value(0)).current;
     return (
         <SafeAreaView style={{flex: 1}}>
+        {/* <StickyParalaxHeader headerType="AvatarHeader" /> */}
+        <LinearGradient colors={["#fbfbfb", "#edf4ff"]} style={styles.container}>
+            <Text style={styles.heading}>
+                Past Visits
+            </Text>
             <Animated.FlatList 
+                style={{height: '40%'}}
                 data={data}
                 keyExtractor={item => item.key}
                 horizontal
@@ -82,7 +92,46 @@ function HistoryScreenRoot({navigation}: {navigation: any}){
                     </TouchableOpacity>
                 }}
                 />
-        </SafeAreaView>
+        <View style={styles.containerGlue}>
+          <View style={styles.buttonContainer}>
+            <View style={styles.rowStyle}>
+              <CardButton
+                width={150}
+                height={75}
+                textSize={15}
+                text="Timeline"
+                iconSize={24}
+                iconName="clock"
+                iconColor="white"
+                textColor="white"
+                iconType="Entypo"
+                rippleColor="white"
+                end={{ x: 1, y: 1 }}
+                start={{ x: 0, y: 0 }}
+                // onPress={_.partial(this.toggle, item).bind(this)}
+                gradientColors={["#74f2ce", "#7cffcb"]}
+              />
+              <CardButton
+                width={150}
+                height={75}
+                textSize={15}
+                iconSize={24}
+                text="Total Distance Travelled"
+                iconColor="white"
+                textColor="white"
+                iconType="Entypo"
+                rippleColor="white"
+                iconName="air"
+                onPress={() => {navigation.push('DistanceChart')}}
+                end={{ x: 1, y: 0 }}
+                start={{ x: 0, y: 1 }}
+                gradientColors={["#74f2ce", "#7cffcb"]}
+              />
+            </View>
+          </View>
+        </View>
+      </LinearGradient>
+    </SafeAreaView> 
     )
 }
 
@@ -90,7 +139,9 @@ const styles = StyleSheet.create({
     itemContainer: {
         width: ITEM_WIDTH,
         height: ITEM_HEIGHT,
-        margin: SPACING
+        marginTop: SPACING *3,
+        marginRight: SPACING,
+        marginLeft: SPACING,
     },
     location: {
         fontSize: 30,
@@ -122,7 +173,40 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 10,
         bottom: 5
+    },
+    rowStyle: {
+        width: 350,
+        alignSelf: "center",
+        flexDirection: "row",
+        alignContent: "center",
+        justifyContent: "space-around"
+    }, 
+    buttonContainer: {
+        height: 350,
+        marginTop: "10%",
+        flexDirection: "column",
+    },
+    container: {
+        flex: 1,
+        alignItems: "center",
+        backgroundColor: "#F5FCFF"
+      },
+    containerGlue: {
+        flex: 1,
+        marginTop: "0%",
+        flexDirection: "column",
+    },
+    heading: {
+        color: '#000',
+        fontSize: 30,
+        width: "100%",
+        top: SPACING * 2,
+        left: SPACING * 2,
+        fontWeight: '800',
+        textTransform: 'uppercase',
+        textAlign: 'left',
     }
+
 })
 
 export default HistoryScreenRoot;
