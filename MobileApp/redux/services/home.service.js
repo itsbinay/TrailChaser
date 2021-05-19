@@ -15,7 +15,7 @@ async function fetchAllTrails(){
         const response = await returned_promise
         
         const result = response.data.result
-        console.log("output: ", result.slice(0,10))
+        console.log("output: ", result.slice(0,2))
         return result
 
     }catch (err) {
