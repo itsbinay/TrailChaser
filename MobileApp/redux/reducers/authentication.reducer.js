@@ -41,6 +41,13 @@ export function authentication(state=initialState,action){
                 isLoggedIn:true,
                 image:action.payload2
             }
+        case userConstants.LOGOUT_REQUEST:
+            return {
+                ...state,
+                user: {},
+                isLoggedIn:false,
+                image:''
+            }
         default:
             return state;
     }

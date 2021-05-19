@@ -2,6 +2,8 @@ import { homeService } from '../services';
 import {homeConstants} from '../constants';
 export const homeActions = {
     fetchAllTrails,
+    fetchDiffTrails,
+    fetchMinMaxLTrails
 };
 //string: 15.8km
 function fetchAllTrails(){
@@ -23,4 +25,60 @@ function fetchAllTrails(){
     function request() {return {type: homeConstants.GET_TRAILS_REQUEST }}
     function success(data) { return { type: homeConstants.GET_TRAILS_SUCCESS, payload: data } }
     function failure() { return { type: homeConstants.GET_TRAILS_FAILURE} }
+}
+
+function fetchDiffTrails(value){
+    let difficulty = ""
+    if(value === 0){
+        difficulty = "easy"
+    }
+    else if(value === 1){
+        difficulty = "moderate"
+    }
+    else{
+        difficulty = "hard"
+    }
+    return dispatch => {
+        dispatch(request())
+        homeService.fetchDiffTrails(difficulty)
+            .then(
+                result =>{
+                    dispatch(success(result));
+                },
+                error => {
+                    console.log('error: ', error)
+                    dispatch(failure());
+                    
+                }
+            )
+    }
+
+    function request() {return {type: homeConstants.GET_DIFF_REQUEST }}
+    function success(data) { return { type: homeConstants.GET_DIFF_SUCCESS, payload: data } }
+    function failure() { return { type: homeConstants.GET_DIFF_FAILURE} }
+}
+
+function fetchMinMaxLTrails(min, max){
+    let minL = min.toString() + ' km'
+    let maxL = max.toString() + ' km'
+    console.log("action")
+    return dispatch => {
+        dispatch(request())
+        console.log("dispatch")
+        homeService.fetchMinMaxLTrails(minL, maxL)
+            .then(
+                result =>{
+                    dispatch(success(result));
+                },
+                error => {
+                    console.log('error: ', error)
+                    dispatch(failure());
+                    
+                }
+            )
+    }
+
+    function request() {return {type: homeConstants.GET_LENGTH_REQUEST }}
+    function success(data) { return { type: homeConstants.GET_LENGTH_SUCCESS, payload: data } }
+    function failure() { return { type: homeConstants.GET_LENGTH_FAILURE} }
 }

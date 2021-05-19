@@ -20,6 +20,7 @@ async function fbloginreg(body){
 
     }catch (err) {
         console.log("err", err)
+        throw new Error(err)
     }
 }
 
@@ -37,6 +38,7 @@ async function register(body){
 
     }catch (err) {
         console.log("err", err)
+        throw new Error(err)
     }
 }
 
@@ -53,6 +55,7 @@ async function login(body){
         })
     }catch(err){
         console.log("err",err)
+        throw new Error(err)
     }
 }
 
