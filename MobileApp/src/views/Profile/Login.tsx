@@ -8,7 +8,7 @@ import {userActions} from '../../../redux/actions';
 
 import {connect,useDispatch} from 'react-redux';
 
-const logo1 = require('../../logo.png')
+const logo1 = 'https://usteats-cms-bucket.s3-ap-southeast-1.amazonaws.com/logo.png'
 import FacebookLogin from '../../components/FacebookLogin';
 import GoogleLogin from '../../components/GoogleLogin';
 
@@ -65,27 +65,29 @@ function Login(props:any){
     const onChangePassword = (e:any)=>{
         setPassword(e)
     }
+
+    const dividor = Dimensions.get('window').height>500?1:2
     return(
         <View style={{height:height,width:width,backgroundColor:"white",display:"flex",alignItems:"center"}}>
-            <Text style={{padding:5}}/>
+            <Text style={{padding:5/dividor}}/>
             <View style={{width:"100%",alignItems:"flex-start"}}>
                 <IconButton
                     icon="close"
                     onPress={onClickClose}
                 />
             </View>
-            <View style={{padding:15}}/>
+            <View style={{padding:15/dividor}}/>
             <Image
-                source={logo1}
+                source={{uri:logo1}}
                 style={{height:100,width:100}}
                 resizeMode="contain"
             />
-            <View style={{padding:15}}/> 
+            <View style={{padding:15/dividor}}/> 
             <View style={{width:width*0.7,alignItems:"center"}}>
                 <Text style={styles.mainHeader}>Welcome back.</Text>
                 <Text style={styles.subHeader}>Login and let's get going.</Text>
             </View> 
-            <View style={{padding:10}}/>
+            <View style={{padding:10/dividor}}/>
             <View style={{width:width*0.9}}>
                 <TextInput
                     style={{height:60}}
@@ -96,7 +98,7 @@ function Login(props:any){
                     value={username}
                     onChangeText={onChangeUsername}
                     />
-                <View style={{padding:5}}/>  
+                <View style={{padding:5/dividor}}/>  
                 <TextInput
                     style={{height:60}}
                     mode="outlined"
@@ -108,7 +110,7 @@ function Login(props:any){
                     theme={{colors:{primary:"#597d35"}}}
                     />    
             </View>  
-            <View style={{padding:10}}/>  
+            <View style={{padding:10/dividor}}/>  
             <Button
                 style={{width:width*0.9,paddingVertical:4}}
                 mode="contained"
@@ -117,15 +119,15 @@ function Login(props:any){
             >
                 Log In
             </Button>
-            <View style={{padding:10}}/>  
+            <View style={{padding:10/dividor}}/>  
             <View style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",width: width*0.9}}>
                 <View style={styles.divider}/>
                 <Text style={{paddingHorizontal:20}}>or</Text>
                 <View style={styles.divider}/>
             </View>
-            <View style={{padding:10}}/>  
+            <View style={{padding:10/dividor}}/>  
             <FacebookLogin/>
-            <View style={{padding:10}}/>
+            <View style={{padding:10/dividor}}/>
         </View>
     )
 }

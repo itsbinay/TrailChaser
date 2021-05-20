@@ -7,7 +7,7 @@ import {useDispatch,connect} from 'react-redux';
 import {userActions} from '../../../redux/actions';
 
 
-const logo1 = require('../../logo.png')
+const logo1 = 'https://usteats-cms-bucket.s3-ap-southeast-1.amazonaws.com/logo.png'
 import FacebookLogin from '../../components/FacebookLogin';
 import GoogleLogin from '../../components/GoogleLogin';
 const {height,width} = Dimensions.get('window')
@@ -93,7 +93,7 @@ function Registration(props:any){
             <ScrollView contentContainerStyle={{alignItems:"center",paddingBottom:90}}>
                 <View style={{padding:15}}/>
                 <Image
-                    source={logo1}
+                    source={{uri:logo1}}
                     style={{height:100,width:100}}
                     resizeMode="contain"
                 />

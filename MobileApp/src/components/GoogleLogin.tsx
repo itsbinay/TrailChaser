@@ -8,7 +8,7 @@ GoogleSignin.configure({
     webClientId:'863831967595-021017alslcppqr6n09ol70t6amdrd8v.apps.googleusercontent.com',
     offlineAccess: true
 })
-const googlelogo = require('./googlelogo.png')
+const googlelogo ='https://usteats-cms-bucket.s3-ap-southeast-1.amazonaws.com/googlelogo.png'
 
 const styles = StyleSheet.create({
     mainView:{
@@ -59,7 +59,7 @@ function GoogleLogin(props:any){
             >
             <View style={styles.mainView}>
                 <Image
-                    source={googlelogo}
+                    source={{uri:googlelogo}}
                     style={{height:25,width:25,resizeMode:"contain"}}
                 />
                 <View style={{paddingHorizontal:width*0.1}}/>

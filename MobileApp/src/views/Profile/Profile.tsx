@@ -15,7 +15,7 @@ import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
 import Icon from 'react-native-vector-icons/Entypo';
 
-const defaultimage = require('./images/avatardefault.jpg')
+const defaultimage ='https://usteats-cms-bucket.s3-ap-southeast-1.amazonaws.com/avatardefault.jpg'
 
 const {height,width} = Dimensions.get('window')
 
