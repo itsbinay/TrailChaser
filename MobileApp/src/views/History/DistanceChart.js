@@ -8,17 +8,11 @@ import {Dimensions} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import { tutorial2Spech } from './theme';
+import {ringData, lineData} from './Screen';
 const {ITEM_WIDTH, ITEM_HEIGHT, RADIUS, SPACING, FULL_SIZE} = tutorial2Spech; 
 
 export default function DistanceChart({navigation}) {
-    const ringData = {
-        labels: ["H", "M", "E"], // optional
-        data: [0.22, 0.04, 0.12]
-      };
-    const lineData = {
-        labels: ["January", "February", "March", "April", "May"],
-        datasets: [{data: [6.4, 4.7, 9.1, 20.2, 12.3]}]
-    }
+    
     return (
         <SafeAreaView style={{flex: 1}}>
         <LinearGradient colors={["#43a047", "#43a047"]} style={styles.container}>

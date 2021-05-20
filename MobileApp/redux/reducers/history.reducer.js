@@ -4,13 +4,16 @@ const timelineData = require('../../src/views/History/data/Timeline.json')
 
 const initialState = { 
     timeline: timelineData,
-    selected: {}
+    selected: {},
+    location: []
 }
 
 export function history(state=initialState,action){
     switch(action.type){
         case historyConstants.GET_TIMELINE_REQUEST:
         case historyConstants.GET_TIMELINE_FAILURE:
+        case historyConstants.GET_LOCATION_REQUEST:
+        case historyConstants.GET_LOCATION_FAILURE:
             return {
                 ...state,
             }
@@ -19,6 +22,11 @@ export function history(state=initialState,action){
                 ...state,
                 timeline: action.payload,
                 selected: {}
+            }
+        case historyConstants.GET_LOCATION_SUCCESS:
+            return {
+                ...state,
+                location: action.payload
             }
         case historyConstants.SELECT_TIMELINE_TILE:
             return {

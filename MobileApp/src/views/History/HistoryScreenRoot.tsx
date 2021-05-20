@@ -1,17 +1,22 @@
 import {View, Text, StyleSheet, Button, FlatList, Animated, Image} from 'react-native';
-import data from './location';
+// import data from './location';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { tutorial2Spech } from './theme';
 const {ITEM_WIDTH, ITEM_HEIGHT, RADIUS, SPACING, FULL_SIZE} = tutorial2Spech; 
-import * as React from 'react';
+import React, {useState, useEffect } from 'react';
 import {SharedElement} from 'react-navigation-shared-element';
 // import { Card } from 'react-native-shadow-cards';
 import CardButton from '@paraboly/react-native-card-button';
 import LinearGradient from 'react-native-linear-gradient';
+import {useDispatch,connect} from 'react-redux';
+import {historyActions} from '../../../redux/actions';
 
-
-function HistoryScreenRoot({navigation}: {navigation: any}){
+function HistoryScreenRoot(props){
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        dispatch(historyActions.fetchLocation())
+    },[])
 
     const scrollx = React.useRef(new Animated.Value(0)).current;
     return (
@@ -23,7 +28,7 @@ function HistoryScreenRoot({navigation}: {navigation: any}){
             </Text>
             <Animated.FlatList 
                 style={{height: '40%'}}
-                data={data}
+                data={props.location}
                 keyExtractor={item => item.key}
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -106,7 +111,7 @@ function HistoryScreenRoot({navigation}: {navigation: any}){
                 rippleColor="white"
                 end={{ x: 1, y: 1 }}
                 start={{ x: 0, y: 0 }}
-                onPress={() => {navigation.push('TimelinePage')}}
+                onPress={() => {props.navigation.navigate('TimelinePage')}}
                 gradientColors={["#43a047", "#66bb6a"]}
               />
               <CardButton
@@ -120,7 +125,7 @@ function HistoryScreenRoot({navigation}: {navigation: any}){
                 iconType="Entypo"
                 rippleColor="white"
                 iconName="air"
-                onPress={() => {navigation.push('DistanceChart')}}
+                onPress={() => {props.navigation.navigate('DistanceChart')}}
                 end={{ x: 1, y: 0 }}
                 start={{ x: 0, y: 1 }}
                 gradientColors={["#43a047", "#66bb6a"]}
@@ -207,4 +212,9 @@ const styles = StyleSheet.create({
 
 })
 
-export default HistoryScreenRoot;
+const mapStateToProps = function(state){
+    return {
+        location: state.history.location
+    }
+}
+export default connect(mapStateToProps)(HistoryScreenRoot);
