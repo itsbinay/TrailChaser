@@ -5,8 +5,10 @@ export const homeActions = {
     fetchDiffTrails,
     fetchMinMaxLTrails,
     selectTrail,
-    weatherAPI
+    weatherAPI,
+    searchTrails
 };
+
 function fetchAllTrails(){
     return dispatch => {
         dispatch(request())
@@ -107,4 +109,11 @@ function fetchMinMaxLTrails(min, max){
     function request() {return {type: homeConstants.GET_LENGTH_REQUEST }}
     function success(data) { return { type: homeConstants.GET_LENGTH_SUCCESS, payload: data } }
     function failure() { return { type: homeConstants.GET_LENGTH_FAILURE} }
+}
+
+function searchTrails(dat) {
+    return dispatch =>{
+        dispatch(success(dat))
+    }
+    function success(data) { return {type:homeConstants.SEARCH_TRAILS,payload:data}}
 }

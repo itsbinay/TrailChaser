@@ -25,4 +25,5 @@ export type HistoryScreenParamList = {
     TravelListDetail: undefined;
     DistanceChart: undefined;
     TimelinePage: undefined;
+    RouteMap: undefined;
 }

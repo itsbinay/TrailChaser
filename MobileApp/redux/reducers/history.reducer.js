@@ -1,7 +1,10 @@
 import {historyConstants} from '../constants';
 
+const timelineData = require('../../src/views/History/data/Timeline.json')
+
 const initialState = { 
-    timeline: []
+    timeline: timelineData,
+    selected: {}
 }
 
 export function history(state=initialState,action){
@@ -14,7 +17,13 @@ export function history(state=initialState,action){
         case historyConstants.GET_TIMELINE_SUCCESS:
             return {
                 ...state,
-                timeline: action.payload
+                timeline: action.payload,
+                selected: {}
+            }
+        case historyConstants.SELECT_TIMELINE_TILE:
+            return {
+                ...state,
+                selected:action.payload
             }
         default:
             return state
