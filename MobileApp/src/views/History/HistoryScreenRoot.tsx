@@ -108,7 +108,7 @@ function HistoryScreenRoot({navigation}: {navigation: any}){
                 rippleColor="white"
                 end={{ x: 1, y: 1 }}
                 start={{ x: 0, y: 0 }}
-                // onPress={_.partial(this.toggle, item).bind(this)}
+                onPress={() => {navigation.push('TimelinePage')}}
                 gradientColors={["#74f2ce", "#7cffcb"]}
               />
               <CardButton
@@ -198,13 +198,13 @@ const styles = StyleSheet.create({
     },
     heading: {
         color: '#000',
-        fontSize: 30,
+        fontSize: 40,
         width: "100%",
         top: SPACING * 2,
         left: SPACING * 2,
-        fontWeight: '800',
-        textTransform: 'uppercase',
+        fontWeight: '900',
         textAlign: 'left',
+        fontFamily: 'sans-serif-light',
     }
 
 })
