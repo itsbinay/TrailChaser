@@ -174,6 +174,14 @@ def sendTimelineData():
     print(data)
     
     return make_response({'result':data})
+
+@app.route('/locationData',methods = ['GET'])
+def sendLocationData():
+    json_url = "data/Location.json"
+    data = json.load(open(json_url))
+    print(data)
+    
+    return make_response({'result':data})
         
 if __name__ == "__main__":
     # logging.info("Starting application ...")
