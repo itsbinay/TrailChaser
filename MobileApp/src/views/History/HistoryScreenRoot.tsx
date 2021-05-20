@@ -107,7 +107,7 @@ function HistoryScreenRoot({navigation}: {navigation: any}){
                 end={{ x: 1, y: 1 }}
                 start={{ x: 0, y: 0 }}
                 onPress={() => {navigation.push('TimelinePage')}}
-                gradientColors={["#74f2ce", "#7cffcb"]}
+                gradientColors={["#43a047", "#66bb6a"]}
               />
               <CardButton
                 width={150}
@@ -123,7 +123,7 @@ function HistoryScreenRoot({navigation}: {navigation: any}){
                 onPress={() => {navigation.push('DistanceChart')}}
                 end={{ x: 1, y: 0 }}
                 start={{ x: 0, y: 1 }}
-                gradientColors={["#74f2ce", "#7cffcb"]}
+                gradientColors={["#43a047", "#66bb6a"]}
               />
             </View>
           </View>

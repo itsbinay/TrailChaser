@@ -4,7 +4,6 @@ import {HistoryScreenParamList} from './types';
 import {StyleSheet} from 'react-native';
 
 import HistoryScreenRoot from '../views/History/HistoryScreenRoot';
-import TravelListDetail from '../views/History/TravelListDetail';
 import DistanceChart from '../views/History/DistanceChart';
 import TimelinePage from '../views/History/TimelinePage';
 import RouteMap from '../views/History/RouteMap';
@@ -28,23 +27,13 @@ export default function HistoryScreenNavigator(){
                 }}
             />
             <HistoryScreenStack.Screen
-                name="TravelListDetail"
-                component={TravelListDetail}
-
-                options={{
-                    headerTransparent: true,
-                    headerTitle: "",
-                    headerTintColor: '#fff'
-                }}
-            />
-            <HistoryScreenStack.Screen
                 name="DistanceChart"
                 component={DistanceChart}
 
                 options={{
                     headerTransparent: true,
                     headerTitle: "",
-                    headerTintColor: '#000'
+                    headerTintColor: '#fff'
                 }}
             />
             <HistoryScreenStack.Screen
