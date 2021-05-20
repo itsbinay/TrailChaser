@@ -1,77 +1,50 @@
 import {View, Text, StyleSheet, Button, FlatList, Animated, Image} from 'react-native';
-import React from 'react';
+import React, {useState, useEffect } from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import { tutorial2Spech } from './theme';
 const {ITEM_WIDTH, ITEM_HEIGHT, RADIUS, SPACING, FULL_SIZE} = tutorial2Spech; 
 import Timeline from 'react-native-beautiful-timeline'
+import Axios from 'axios';
 
-const data = [
-    {
-      "date": 1618735011000,
-      "data": [
-        {
-          "title": "High Junk Peak Country Trail",
-          "subtitle": "Difficulty: Moderate \nDuration: 2 h 20 m",
-          "date": 1618735011000
-        }
-      ]
-    },
-    {
-      "date": 1619226291000,
-      "data": [
-        {
-          "title": "Lantau Trail: Section 3",
-          "subtitle": "Difficulty: Moderate \nDuration: 1 h 53 m",
-          "date": 1619226291000
-        },
-        {
-          "title": "Lantau Trail: Section 7 and 8",
-          "subtitle": "Difficulty: Moderate \nDuration: 4 h 37 m",
-          "date": 1619233071000
-        }
-      ]
-    },
-    {
-      "date": 1619858631000,
-      "data": [
-        {
-          "title": "Tai To Yan Trail",
-          "subtitle": "Difficulty: Hard \nDuration: 4 h 32 m",
-          "date": 1619858631000
-        }
-      ]
-    },
-    {
-        "date": 1620516891000,
-        "data": [
-          {
-            "title": "Rooster Ridge Hike",
-            "subtitle": "Difficulty: Moderate \nDuration: 2 h 13 m",
-            "date": 1620516891000
-          }
-        ]
-      }
-  ]
+const API_URL_PROD = require('../../../module.config').PROD_URL
+
+const url = "http://10.0.2.2:5000"
 
 export default function TimelinePage({navigation}) {
-    
-    return (
-        <SafeAreaView style={{flex: 1}}>
-            <LinearGradient colors={["#fbfbfb", "#edf4ff"]} style={styles.container}>
-            <View style={{width: "100%", height:"25%"}}>
-            <Text style={styles.heading}>
-                Timeline
-            </Text>
-            <Text style={styles.subheading}>
-                Your Timeline of visited trails
-            </Text>
-            </View>
-            <Timeline data={data} backgroundColor='transparent' />
-            </LinearGradient>
-        </SafeAreaView>
 
-    )
+  const [data,setData] =useState([])
+
+  useEffect(()=>{
+    let mounted = true;
+    
+    Axios.get(url + '/timelineData')
+      .then(function(response) {
+          // handle response
+        console.log(response.data);
+        setData(response.data.result);
+      }).catch(function(error) {
+          // handle error
+          console.log(error);
+      })
+    return () => mounted = false;
+  },[])
+  return (
+      <SafeAreaView style={{flex: 1}}>
+          <LinearGradient colors={["#fbfbfb", "#edf4ff"]} style={styles.container}>
+          <View style={{width: "100%", height:"25%"}}>
+          <Text style={styles.heading}>
+              Timeline
+          </Text>
+          <Text style={styles.subheading}>
+              Your Timeline of visited trails
+          </Text>
+          </View>
+          <Timeline data={data} backgroundColor='transparent' />
+          </LinearGradient>
+      </SafeAreaView>
+
+  )
 }
 
 
