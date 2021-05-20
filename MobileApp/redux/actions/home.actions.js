@@ -3,9 +3,10 @@ import {homeConstants} from '../constants';
 export const homeActions = {
     fetchAllTrails,
     fetchDiffTrails,
-    fetchMinMaxLTrails
+    fetchMinMaxLTrails,
+    selectTrail,
+    weatherAPI
 };
-//string: 15.8km
 function fetchAllTrails(){
     return dispatch => {
         dispatch(request())
@@ -26,7 +27,32 @@ function fetchAllTrails(){
     function success(data) { return { type: homeConstants.GET_TRAILS_SUCCESS, payload: data } }
     function failure() { return { type: homeConstants.GET_TRAILS_FAILURE} }
 }
+function weatherAPI(){
+    return dispatch => {
+        dispatch(request())
+        homeService.weatherAPI()
+            .then(
+                result =>{
+                    dispatch(success(result));
+                },
+                error => {
+                    console.log('error: ', error)
+                    dispatch(failure());
+                    
+                }
+            )
+    }
 
+    function request() {return {type: homeConstants.WEATHER_REQUEST }}
+    function success(data) { return { type: homeConstants.WEATHER_SUCCESS, payload: data } }
+    function failure() { return { type: homeConstants.WEATHER_FAILURE} }
+}
+function selectTrail(trail){
+    return dispatch=>{
+        dispatch(success(trail))
+    }
+    function success(data) {return {type:homeConstants.SELECT_TRAIL,payload:data}}
+}
 function fetchDiffTrails(value){
     let difficulty = ""
     if(value === 0){

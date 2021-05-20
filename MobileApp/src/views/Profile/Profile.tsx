@@ -15,7 +15,7 @@ import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
 import Icon from 'react-native-vector-icons/Entypo';
 
-const defaultimage = require('./images/avatardefault.jpg')
+const defaultimage ='https://usteats-cms-bucket.s3-ap-southeast-1.amazonaws.com/avatardefault.jpg'
 
 const {height,width} = Dimensions.get('window')
 
@@ -59,7 +59,8 @@ function Profile(props:any){
           maximumAge: 1000
         },
       )
-      watchId = Geolocation.watchPosition(position => {
+
+      watchId = Geolocation.watchPosition((position:any) => {
         const lastPosition = JSON.stringify(position);
         const lat = Math.round((position.coords.latitude) * 100) / 100
         const long = Math.round((position.coords.longitude) * 100) / 100
@@ -83,7 +84,6 @@ function Profile(props:any){
       }
     },[props.auth.isLoggedIn])
 
-    console.log("location:",location)
     return(
       <SafeAreaView style={{flex: 1}}>
         <LinearGradient colors={["#fbfbfb", "#edf4ff"]} style={styles.container}>

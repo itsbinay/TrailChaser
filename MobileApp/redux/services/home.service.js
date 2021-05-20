@@ -5,9 +5,24 @@ const API_URL_DEV = require('../../module.config').DEV_URL;
 export const homeService = {
     fetchAllTrails,
     fetchDiffTrails,
-    fetchMinMaxLTrails
+    fetchMinMaxLTrails,
+    weatherAPI
 }
+async function weatherAPI(){
+    try{
+        console.log("enter weather:")
+        const returned_promise = Axios.get('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=en')
+        
+        const response = await returned_promise
+        
+        const result = response.data.weatherForecast
+        console.log("output: ", result.slice(0,2))
+        return result
 
+    }catch (err) {
+        console.log("err", err)
+    }
+}
 async function fetchAllTrails(){
     
     try{
