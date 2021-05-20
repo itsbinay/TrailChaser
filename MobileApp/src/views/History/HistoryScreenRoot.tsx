@@ -1,133 +1,154 @@
-import {View, Text, StyleSheet, Button, FlatList, Animated, Image} from 'react-native';
+import {View, Text, StyleSheet, Button, FlatList, Animated, Image,Dimensions} from 'react-native';
 import data from './location';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { tutorial2Spech } from './theme';
+import {connect} from 'react-redux'
+
 const {ITEM_WIDTH, ITEM_HEIGHT, RADIUS, SPACING, FULL_SIZE} = tutorial2Spech; 
 import * as React from 'react';
 import {SharedElement} from 'react-navigation-shared-element';
 // import { Card } from 'react-native-shadow-cards';
 import CardButton from '@paraboly/react-native-card-button';
 import LinearGradient from 'react-native-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/routers';
 
+const logo1 = 'https://usteats-cms-bucket.s3-ap-southeast-1.amazonaws.com/logo.png'
+const {height,width} = Dimensions.get('window')
 
-function HistoryScreenRoot({navigation}: {navigation: any}){
+function HistoryScreenRoot(props:any){
+
+    const navigation = useNavigation()
 
     const scrollx = React.useRef(new Animated.Value(0)).current;
     return (
         <SafeAreaView style={{flex: 1}}>
         {/* <StickyParalaxHeader headerType="AvatarHeader" /> */}
         <LinearGradient colors={["#fbfbfb", "#edf4ff"]} style={styles.container}>
-            <Text style={styles.heading}>
-                Past Visits
-            </Text>
-            <Animated.FlatList 
-                style={{height: '40%'}}
-                data={data}
-                keyExtractor={item => item.key}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                snapToInterval={FULL_SIZE}
-                decelerationRate='fast'
-                onScroll={Animated.event(
-                    [{nativeEvent: {contentOffset: {x: scrollx}}}],
-                    { useNativeDriver: true}
-                )}
-                renderItem={({item, index}) => {
-                    const inputRange = [
-                        (index - 1) * FULL_SIZE, 
-                        index * FULL_SIZE, 
-                        (index + 1) * FULL_SIZE,
-                    ];
+            {
+                props.isLoggedIn?
+                <View>
+                <Text style={styles.heading}>Past Visits</Text>
+                    <Animated.FlatList 
+                        style={{height: '40%'}}
+                        data={data}
+                        keyExtractor={item => item.key}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        snapToInterval={FULL_SIZE}
+                        decelerationRate='fast'
+                        onScroll={Animated.event(
+                            [{nativeEvent: {contentOffset: {x: scrollx}}}],
+                            { useNativeDriver: true}
+                        )}
+                        renderItem={({item, index}) => {
+                            const inputRange = [
+                                (index - 1) * FULL_SIZE, 
+                                index * FULL_SIZE, 
+                                (index + 1) * FULL_SIZE,
+                            ];
 
-                    const translateX = scrollx.interpolate({
-                        inputRange,
-                        outputRange: [ITEM_WIDTH, 0, -ITEM_WIDTH]
-                    })
-                    const scale = scrollx.interpolate({
-                        inputRange,
-                        outputRange: [1, 1.1, 1],
-                    });
+                            const translateX = scrollx.interpolate({
+                                inputRange,
+                                outputRange: [ITEM_WIDTH, 0, -ITEM_WIDTH]
+                            })
+                            const scale = scrollx.interpolate({
+                                inputRange,
+                                outputRange: [1, 1.1, 1],
+                            });
 
-                    return <TouchableOpacity style={styles.itemContainer}> 
-                    <View style={[StyleSheet.absoluteFillObject, {overflow: 'hidden', borderRadius: RADIUS}]}>
-                        <Animated.Image 
-                            source={{uri: item.image}} 
-                            style={[StyleSheet.absoluteFillObject, {
-                                resizeMode: 'cover',
-                                transform: [{scale}]
-                            }]}
-                        />
-                    </View>
-                    <SharedElement 
-                    id={`item.${item.key}.photo`} 
-                    style={[StyleSheet.absoluteFillObject]}>
-                        <View style={[
-                            StyleSheet.absoluteFillObject,
-                            {overflow: 'hidden', borderRadius: RADIUS},
-                        ]}>
-                            <Animated.Image
-                                source={{uri: item.image}}
-                                style={[
-                                    StyleSheet.absoluteFillObject,
-                                    {
+                            return <TouchableOpacity style={styles.itemContainer}> 
+                            <View style={[StyleSheet.absoluteFillObject, {overflow: 'hidden', borderRadius: RADIUS}]}>
+                                <Animated.Image 
+                                    source={{uri: item.image}} 
+                                    style={[StyleSheet.absoluteFillObject, {
                                         resizeMode: 'cover',
-                                        transform: [{scale}],
-                                    },
-                                ]}
+                                        transform: [{scale}]
+                                    }]}
                                 />
+                            </View>
+                            <SharedElement 
+                            id={`item.${item.key}.photo`} 
+                            style={[StyleSheet.absoluteFillObject]}>
+                                <View style={[
+                                    StyleSheet.absoluteFillObject,
+                                    {overflow: 'hidden', borderRadius: RADIUS},
+                                ]}>
+                                    <Animated.Image
+                                        source={{uri: item.image}}
+                                        style={[
+                                            StyleSheet.absoluteFillObject,
+                                            {
+                                                resizeMode: 'cover',
+                                                transform: [{scale}],
+                                            },
+                                        ]}
+                                        />
+                                </View>
+                            </SharedElement>
+                            <SharedElement id={`item.${item.key}.location`}>
+                            <Animated.Text style={[styles.location, {
+                                transform: [{translateX}],
+                            }]}>{item.location}</Animated.Text>
+                            </SharedElement>
+                            <View style={styles.days}>
+                                <Text style={styles.daysValue}>{item.numberOfDays}</Text>
+                                <Text style={styles.daysLabel}>days ago</Text>
+                            </View>
+                            </TouchableOpacity>
+                        }}
+                        />
+                        <View style={styles.containerGlue}>
+                        <View style={styles.buttonContainer}>
+                            <View style={styles.rowStyle}>
+                            <CardButton
+                                width={150}
+                                height={75}
+                                textSize={15}
+                                text="Timeline"
+                                iconSize={24}
+                                iconName="clock"
+                                iconColor="white"
+                                textColor="white"
+                                iconType="Entypo"
+                                rippleColor="white"
+                                end={{ x: 1, y: 1 }}
+                                start={{ x: 0, y: 0 }}
+                                onPress={() => {navigation.dispatch(StackActions.push('TimelinePage'))}}
+                                gradientColors={["#43a047", "#66bb6a"]}
+                            />
+                            <CardButton
+                                width={150}
+                                height={75}
+                                textSize={15}
+                                iconSize={24}
+                                text="Total Distance Travelled"
+                                iconColor="white"
+                                textColor="white"
+                                iconType="Entypo"
+                                rippleColor="white"
+                                iconName="air"
+                                onPress={() => {navigation.dispatch(StackActions.push('DistanceChart'))}}
+                                end={{ x: 1, y: 0 }}
+                                start={{ x: 0, y: 1 }}
+                                gradientColors={["#43a047", "#66bb6a"]}
+                            />
+                            </View>
                         </View>
-                    </SharedElement>
-                    <SharedElement id={`item.${item.key}.location`}>
-                    <Animated.Text style={[styles.location, {
-                        transform: [{translateX}],
-                    }]}>{item.location}</Animated.Text>
-                    </SharedElement>
-                    <View style={styles.days}>
-                        <Text style={styles.daysValue}>{item.numberOfDays}</Text>
-                        <Text style={styles.daysLabel}>days ago</Text>
                     </View>
-                    </TouchableOpacity>
-                }}
-                />
-        <View style={styles.containerGlue}>
-          <View style={styles.buttonContainer}>
-            <View style={styles.rowStyle}>
-              <CardButton
-                width={150}
-                height={75}
-                textSize={15}
-                text="Timeline"
-                iconSize={24}
-                iconName="clock"
-                iconColor="white"
-                textColor="white"
-                iconType="Entypo"
-                rippleColor="white"
-                end={{ x: 1, y: 1 }}
-                start={{ x: 0, y: 0 }}
-                onPress={() => {navigation.push('TimelinePage')}}
-                gradientColors={["#43a047", "#66bb6a"]}
-              />
-              <CardButton
-                width={150}
-                height={75}
-                textSize={15}
-                iconSize={24}
-                text="Total Distance Travelled"
-                iconColor="white"
-                textColor="white"
-                iconType="Entypo"
-                rippleColor="white"
-                iconName="air"
-                onPress={() => {navigation.push('DistanceChart')}}
-                end={{ x: 1, y: 0 }}
-                start={{ x: 0, y: 1 }}
-                gradientColors={["#43a047", "#66bb6a"]}
-              />
-            </View>
-          </View>
-        </View>
+                </View>
+                :<View style={{height:height,justifyContent:"center",alignItems:"center"}}>
+                    <Image
+                        source={{uri:logo1}}
+                        style={{height:150,width:150}}
+                        resizeMode="contain"
+                    />
+                    <View style={{padding:35}}/>
+                    <Text style={{fontSize:30}}>Login to Continue</Text>
+                </View>
+            }
+            
       </LinearGradient>
     </SafeAreaView> 
     )
@@ -207,4 +228,9 @@ const styles = StyleSheet.create({
 
 })
 
-export default HistoryScreenRoot;
+const mapStateToProps = function(state:any){
+    return {
+        isLoggedIn: state.authentication.isLoggedIn
+    }
+}
+export default connect(mapStateToProps)(HistoryScreenRoot);
