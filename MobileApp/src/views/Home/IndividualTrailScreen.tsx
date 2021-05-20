@@ -89,10 +89,10 @@ function IndividualTrailScreen(props:any){
                             <Title style={{textAlign: 'left', color: 'white'}}>{week}</Title>
                         </View>
                         <Paragraph style={{color: 'white'}}>{date}</Paragraph>
-                        <Paragraph style={{color: 'white'}}>Min. Temperature: {item.forecastMintemp.value}&deg;C</Paragraph>
-                        <Paragraph style={{color: 'white'}}>Max. Temperature: {item.forecastMaxtemp.value}&deg;C</Paragraph>
-                        <Paragraph style={{color: 'white'}}>Max. Rainfall: {item.forecastMaxrh.value}%</Paragraph>
-                        <Paragraph style={{color: 'white'}}>Min. Rainfall: {item.forecastMinrh.value}%</Paragraph>
+                        <Paragraph style={{color: 'white'}}>Min. Temperature : {item.forecastMintemp.value}&deg;C</Paragraph>
+                        <Paragraph style={{color: 'white'}}>Max. Temperature : {item.forecastMaxtemp.value}&deg;C</Paragraph>
+                        <Paragraph style={{color: 'white'}}>Max. Rainfall : {item.forecastMaxrh.value}%</Paragraph>
+                        <Paragraph style={{color: 'white'}}>Min. Rainfall : {item.forecastMinrh.value}%</Paragraph>
                     </Card.Content>
                     </Card>
             </View>

@@ -9,10 +9,10 @@ import { useNavigation } from '@react-navigation/native';
 import Login from './Login'
 import Registration from './Registration';
 
-const image1 = require('./images/hiking1.jpg')
-const image2 = require('./images/hiking2.jpg')
-const image3 = require('./images/hiking3.jpg')
-const image4 = require('./images/hiking4.jpg')
+const image1 = require('./images/hiking1.png')
+const image2 = require('./images/hiking2.png')
+const image3 = require('./images/hiking3.png')
+const image4 = require('./images/hiking4.png')
 
 
 const styles = StyleSheet.create({

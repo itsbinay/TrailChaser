@@ -15,7 +15,7 @@ import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
 import Icon from 'react-native-vector-icons/Entypo';
 
-const defaultimage = require('./images/avatardefault.jpg')
+const defaultimage = require('./images/avatardefault.png')
 
 const {height,width} = Dimensions.get('window')
 
