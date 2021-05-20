@@ -49,9 +49,7 @@ function HistoryScreenRoot({navigation}: {navigation: any}){
                         outputRange: [1, 1.1, 1],
                     });
 
-                    return <TouchableOpacity onPress={() => {
-                        navigation.push('TravelListDetail', {item})
-                    }} style={styles.itemContainer}> 
+                    return <TouchableOpacity style={styles.itemContainer}> 
                     <View style={[StyleSheet.absoluteFillObject, {overflow: 'hidden', borderRadius: RADIUS}]}>
                         <Animated.Image 
                             source={{uri: item.image}} 
