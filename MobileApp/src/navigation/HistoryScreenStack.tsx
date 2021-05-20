@@ -5,6 +5,7 @@ import {StyleSheet} from 'react-native';
 import HistoryScreenRoot from '../views/History/HistoryScreenRoot';
 import TravelListDetail from '../views/History/TravelListDetail';
 import DistanceChart from '../views/History/DistanceChart';
+import TimelinePage from '../views/History/TimelinePage';
 
 const HistoryScreenStack = createStackNavigator<HistoryScreenParamList>();
 
@@ -41,7 +42,17 @@ export default function HistoryScreenNavigator(){
                 options={{
                     headerTransparent: true,
                     headerTitle: "",
-                    headerTintColor: '#fff'
+                    headerTintColor: '#000'
+                }}
+            />
+            <HistoryScreenStack.Screen
+                name="TimelinePage"
+                component={TimelinePage}
+
+                options={{
+                    headerTransparent: true,
+                    headerTitle: "",
+                    headerTintColor: '#000'
                 }}
             />
         </HistoryScreenStack.Navigator>

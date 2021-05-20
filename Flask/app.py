@@ -5,6 +5,7 @@ from flask import jsonify, request
 import os
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
+import json
 
 app = Flask(__name__)
 app.config["MONGO_URI"]=os.environ.get('MONGO_URI')
@@ -165,6 +166,13 @@ def loginregfb():
                 returndict[key] = exists[key]
 
         return make_response({"result":returndict},200)
+
+@app.route('/timelineData',methods = ['GET'])
+def sendTimelineData():
+    json_url = "data/Timeline.json"
+    data = json.load(open(json_url))
+    print(data)
+    return jsonify(data)
         
 if __name__ == "__main__":
     # logging.info("Starting application ...")
