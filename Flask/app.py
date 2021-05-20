@@ -172,7 +172,8 @@ def sendTimelineData():
     json_url = "data/Timeline.json"
     data = json.load(open(json_url))
     print(data)
-    return jsonify(data)
+    
+    return make_response({'result':data})
         
 if __name__ == "__main__":
     # logging.info("Starting application ...")
