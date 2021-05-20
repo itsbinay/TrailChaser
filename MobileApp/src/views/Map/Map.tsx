@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     bubble: {
         flex: 1,
         backgroundColor: "rgba(255,255,255,0.7)",
-        paddingHorizontal: 18,
+        width:"100%",
         paddingVertical: 12,
         borderRadius: 20
     },
@@ -64,6 +64,7 @@ class Map extends React.Component< {},$FlowFixMeState,>{
                 longitudeDelta: 0
             }),
             haslocationPermission: false,
+            enableRecording: false,
         }
         console.log("constructor called")
         this.marker = React.createRef();
@@ -87,12 +88,12 @@ class Map extends React.Component< {},$FlowFixMeState,>{
                     longitude:long
                 }
                 console.log("calling update")
-                if(this.marker){
-                    this.marker.current.animateMarkerToCoordinate(
-                        newCoordinate,
-                        500
-                    );
-                }
+                // if(this.marker){
+                //     this.marker.current.animateMarkerToCoordinate(
+                //         newCoordinate,
+                //         500
+                //     );
+                // }
             },
             (error:any) => Alert.alert('Error', JSON.stringify(error)),
             {
@@ -138,6 +139,10 @@ class Map extends React.Component< {},$FlowFixMeState,>{
 
     componentWillUnmount() {
         Geolocation.clearWatch(this.watchID);
+    }
+
+    onClickRequestRecord =()=>{
+        console.log("logging:")
     }
     requestCameraPermission = async () => {
         try {
@@ -196,13 +201,28 @@ class Map extends React.Component< {},$FlowFixMeState,>{
                             coordinate={this.state.coordinate}
                             />
                     </MapView>
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={[styles.bubble, styles.button]}>
-                            <Text style={styles.bottomBarContent}>
-                                {parseFloat(this.state.distanceTravelled).toFixed(2)} km
-                            </Text>
-                        </TouchableOpacity>
+                    <View style={{width:"100%",alignItems:"center"}}>
+                        <Text>Hello World</Text>
                     </View>
+                    <View style={{flex:1}}></View>
+                    {
+                        this.state.enableRecording?
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity style={[styles.bubble, styles.button]}>
+                                <Text style={styles.bottomBarContent}>
+                                    {parseFloat(this.state.distanceTravelled).toFixed(2)} km
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        :<View style={styles.buttonContainer}>
+                            <TouchableOpacity 
+                                onPress={this.onClickRequestRecord}
+                                style={[styles.bubble,{alignItems:"center"}]}>
+                                <Text>Hello</Text>
+                            </TouchableOpacity>
+                        </View>
+                    }
+                    
                 </View>
             </View>
         )
