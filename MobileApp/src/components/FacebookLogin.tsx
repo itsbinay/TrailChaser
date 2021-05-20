@@ -5,7 +5,7 @@ import {useDispatch} from 'react-redux'
 import {userActions} from '../../redux/actions';
 
 
-const fblogo = require('./fblogo.png')
+const fblogo = 'https://usteats-cms-bucket.s3-ap-southeast-1.amazonaws.com/fblogo.png'
 const width = Dimensions.get('window').width
 
 function FacebookLogin(props:any){
@@ -51,7 +51,7 @@ function FacebookLogin(props:any){
             >
             <View style={{backgroundColor:"#3a559f",display:"flex",flexDirection:"row",alignItems:"center",paddingVertical:10,paddingRight:20,paddingLeft:10,borderRadius:5,width:width*0.9}}>
                 <Image
-                    source={fblogo}
+                    source={{uri:fblogo}}
                     style={{height:25,width:25,resizeMode:"contain"}}
                     
                 />
