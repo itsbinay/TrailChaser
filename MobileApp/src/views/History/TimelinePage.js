@@ -5,30 +5,19 @@ import LinearGradient from 'react-native-linear-gradient';
 import { tutorial2Spech } from './theme';
 const {ITEM_WIDTH, ITEM_HEIGHT, RADIUS, SPACING, FULL_SIZE} = tutorial2Spech; 
 import Timeline from 'react-native-beautiful-timeline'
-import Axios from 'axios';
 
-const API_URL_PROD = require('../../../module.config').PROD_URL
+import {useDispatch,connect} from 'react-redux';
+import {historyActions} from '../../../redux/actions';
 
-const url = "http://10.0.2.2:5000"
+function TimelinePage(props) {
 
-export default function TimelinePage({navigation}) {
 
-  const [data,setData] =useState([])
-
+  const dispatch = useDispatch()
   useEffect(()=>{
-    let mounted = true;
-    
-    Axios.get(url + '/timelineData')
-      .then(function(response) {
-          // handle response
-        console.log(response.data);
-        setData(response.data.result);
-      }).catch(function(error) {
-          // handle error
-          console.log(error);
-      })
-    return () => mounted = false;
+    dispatch(historyActions.fetchTimeline())
   },[])
+
+  console.log("props:",props.data.timeline)
   return (
       <SafeAreaView style={{flex: 1}}>
           <LinearGradient colors={["#fbfbfb", "#edf4ff"]} style={styles.container}>
@@ -40,7 +29,7 @@ export default function TimelinePage({navigation}) {
               Your Timeline of visited trails
           </Text>
           </View>
-          <Timeline data={data} backgroundColor='transparent' />
+          <Timeline data={props.data.timeline} backgroundColor='transparent' />
           </LinearGradient>
       </SafeAreaView>
 
@@ -77,3 +66,9 @@ const styles = StyleSheet.create({
         fontFamily: 'sans-serif-light',
     },
 })
+const mapStateToProps = function(state){
+    return {
+        data: state.history
+    }
+}
+export default connect(mapStateToProps)(TimelinePage)

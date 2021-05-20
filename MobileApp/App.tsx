@@ -8,7 +8,7 @@
  * @format
  */
 
-import React from 'react';
+import React,{useEffect} from 'react';
 import 'react-native-gesture-handler';
 
 import {
@@ -28,6 +28,7 @@ import rootReducer from './redux/reducers'
 import {Provider} from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { Settings } from 'react-native-fbsdk-next';
+import { PermissionsAndroid } from 'react-native';
 
 const persistConfig = {
   key: 'root',
@@ -42,6 +43,32 @@ Settings.initializeSDK()
 
 
 const App = () => {
+  useEffect(()=>{
+    const requestLocationPermissions = async () => {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: "TrailChaser Location Permission",
+            message:
+              "TrailChaser needs access to your location " +
+              "to track your trails.",
+            buttonNeutral: "Ask Me Later",
+            buttonNegative: "Cancel",
+            buttonPositive: "OK"
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log("You can use the location");
+        } else {
+          console.log("location permission denied");
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    };
+    requestLocationPermissions();
+  },[])
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

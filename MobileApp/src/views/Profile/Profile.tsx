@@ -92,7 +92,7 @@ function Profile(props:any){
               rounded
               size={150}
               activeOpacity={0.7}
-              source={props.auth.image==''?defaultimage:{uri:props.auth.image}}
+              source={{uri:props.auth.image==''?defaultimage:props.auth.image}}
               />
           <View style={{padding:8}}/>
           <Text style={styles.nameStyle}>{props.auth.user.firstname+" "+props.auth.user.lastname}</Text>
