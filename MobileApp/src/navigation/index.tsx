@@ -8,7 +8,8 @@ import {BottomTabParamList, RootStackParamList, HomeScreenParamList} from './typ
 import ProfileScreenNavigator from './ProfileScreenStack';
 import HomeScreenNavigator from './HomeScreenStack';
 import HistoryScreenNavigator from './HistoryScreenStack';
-
+import Map from '../views/Map/Map'
+ 
 import Icon from 'react-native-vector-icons/Feather';
 import CustomNavigationTab from './CustomNavigationTab';
 
@@ -30,6 +31,13 @@ function BottomTabNavigator() {
                     component={HomeScreenNavigator}
                     options={{
                         tabBarIcon: ({color}:any)=> <Icon name="home" size={25} color={color}/>
+                    }}
+                />
+                <BottomTab.Screen
+                    name="Map"
+                    component={Map}
+                    options={{
+                        tabBarIcon: ({color}:any)=> <Icon name="map" size={25} color={color}/>
                     }}
                 />
                 <BottomTab.Screen
