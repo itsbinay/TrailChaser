@@ -2,10 +2,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {HistoryScreenParamList} from './types';
 import {StyleSheet} from 'react-native';
+
 import HistoryScreenRoot from '../views/History/HistoryScreenRoot';
 import TravelListDetail from '../views/History/TravelListDetail';
 import DistanceChart from '../views/History/DistanceChart';
 import TimelinePage from '../views/History/TimelinePage';
+import RouteMap from '../views/History/RouteMap';
 
 const HistoryScreenStack = createStackNavigator<HistoryScreenParamList>();
 
@@ -48,6 +50,16 @@ export default function HistoryScreenNavigator(){
             <HistoryScreenStack.Screen
                 name="TimelinePage"
                 component={TimelinePage}
+
+                options={{
+                    headerTransparent: true,
+                    headerTitle: "",
+                    headerTintColor: '#000'
+                }}
+            />
+            <HistoryScreenStack.Screen
+                name="RouteMap"
+                component={RouteMap}
 
                 options={{
                     headerTransparent: true,

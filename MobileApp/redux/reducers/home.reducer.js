@@ -2,7 +2,8 @@ import {homeConstants} from '../constants';
 const initialState = {
     trails: [],
     selectedTrail: {},
-    weather:[]
+    weather:[],
+    filteredTrails: []
 }
 
 export function home(state = initialState, action){
@@ -37,6 +38,19 @@ export function home(state = initialState, action){
             return {
                 ...state,
                 selectedTrail: action.payload
+            }
+        case homeConstants.SEARCH_TRAILS:
+            if(action.payload===''){
+                return {
+                    ...state,
+                    filteredTrails:state.trails
+                }
+            }
+            return {
+                ...state,
+                filteredTrails: state.trails.filter((val)=>{
+                    return val.name.includes(action.payload)
+                })
             }
         default:
             return state

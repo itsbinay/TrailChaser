@@ -1,9 +1,12 @@
-import React,{useEffect, useState,useRef} from 'react'
+import React from 'react'
 // import MapboxGL from '@react-native-mapbox-gl/maps';
-import {StyleSheet, View,Text,Dimensions,Platform,TouchableOpacity,Alert,PermissionsAndroid} from 'react-native'
+import {StyleSheet, View,Text,Dimensions,Platform,TouchableOpacity,Alert,PermissionsAndroid, FlatList} from 'react-native'
 import MapView, {Marker,Polyline, AnimatedRegion, PROVIDER_GOOGLE } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import haversine from "haversine";
+import {Card,  Title, Paragraph,IconButton, Modal,Portal,Provider, TextInput} from 'react-native-paper';
+import {homeActions} from '../../../redux/actions';
+import {connect} from 'react-redux'
 
 const {height,width} = Dimensions.get('window')
 // MapboxGL.setAccessToken("pk.eyJ1IjoiaXRzYmluYXkiLCJhIjoiY2tvdnJkNzl1MDlpZTJwcGF0dW1xa3hudiJ9.Jhd-dk1rdjNEe4rTqw8Cug")
@@ -17,7 +20,8 @@ const styles = StyleSheet.create({
     container: {
         height:height-100,
         width:width,
-        backgroundColor:"tomato"
+        backgroundColor:"tomato",
+        alignItems:"center"
     },
     map: {
         flex:1,
@@ -25,8 +29,8 @@ const styles = StyleSheet.create({
     },
     bubble: {
         flex: 1,
-        backgroundColor: "rgba(255,255,255,0.7)",
-        width:"100%",
+        backgroundColor: "rgba(89, 125, 53,0.8)",
+        width:"90%",
         paddingVertical: 12,
         borderRadius: 20
     },
@@ -43,11 +47,24 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: "row",
         marginVertical: 20,
+        width:"90%",
         backgroundColor: "transparent"
-    }
+    },
+    card:{
+        width:"100%",
+        flex: 1,
+        color:"black"
+    },
+    trailCard:{
+        width:"100%",
+        alignItems:"center",
+        justifyContent: 'center',
+        flexDirection: "column",
+        marginBottom: 5
+    },
 })
 
-class Map extends React.Component< {},$FlowFixMeState,>{
+class Map extends React.Component{
     watchID: any;
     constructor(props:any){
         super(props);
@@ -65,8 +82,14 @@ class Map extends React.Component< {},$FlowFixMeState,>{
             }),
             haslocationPermission: false,
             enableRecording: false,
+            visible: false,
+            searchInput: '',
+            clickedTrail:{},
+            selectedTrail:false
         }
         console.log("constructor called")
+    console.log("trails:",this.props.trails)
+
         this.marker = React.createRef();
     }
 
@@ -128,11 +151,6 @@ class Map extends React.Component< {},$FlowFixMeState,>{
                 distanceTravelled: distanceTravelled + this.calcDistance(newCoordinate),
                 prevLatLng: newCoordinate
               });
-            // setLat(lat)
-            // setLong(long)
-            // setRouteCoordinates([...routeCoordinates,newCoordinate])
-            // setDistanceTravelled(distanceTravelled+calcDistance(newCoordinate))
-            // setPrevLatLng(newCoordinate)
 
           })
     }
@@ -143,6 +161,10 @@ class Map extends React.Component< {},$FlowFixMeState,>{
 
     onClickRequestRecord =()=>{
         console.log("logging:")
+        this.props.searchTrails('')
+        this.setState({
+            visible: true
+        })
     }
     requestCameraPermission = async () => {
         try {
@@ -177,58 +199,158 @@ class Map extends React.Component< {},$FlowFixMeState,>{
         return haversine(prevLatLng, newLatLng) || 0;
     };
 
+    onDismiss = ()=>{
+        console.log("called dismiss")
+        this.setState({
+            visible: false
+        })
+    }
+
+    onSearch = (e:any) =>{
+        this.setState({
+            searchInput: e
+        })
+        this.props.searchTrails(e)
+    }
+
+    onClickTrail = (item:any) =>{
+        this.setState({
+            clickedTrail: item,
+            selectedTrail:true
+        })
+        this.onDismiss()
+    }
+    renderItem = ({item, index}:any) => (
+        <TouchableOpacity
+            style={styles.trailCard}
+            key={index}
+            onPress={()=>this.onClickTrail(item)}
+            >  
+            <Card    
+            style={styles.card}
+            key = {index}
+            >
+                <Card.Content>
+                    <Title>{item.name}</Title>
+                    <Card.Cover source={item.image ? {uri: item.image} : require('../Home/hk.png')} />
+                    <Paragraph>Difficulty: {item.difficulty}</Paragraph>
+                    <Paragraph>Location: {item.location}</Paragraph>
+                    <Paragraph>Length: {item.length}</Paragraph>
+                    <Paragraph>Duration: {item.duration ? item.duration : "-"}</Paragraph>
+                </Card.Content>
+
+            </Card>
+        </TouchableOpacity>
+    )
+
+    stopRecording = () =>{
+        console.log("pressed stop")
+        this.setState({
+            selectedTrail:false,
+            clickedTrail:{}
+        })
+    }
     render(){
         return(
-            <View style={styles.root}>
-                <View style={styles.container}>
-                    {/* <MapboxGL.MapView style={styles.map}/> */}
-                    <MapView
-                        provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-                        style={styles.map}
-                        region={{
-                            latitude: this.state.latitude,
-                            longitude: this.state.longitude,
-                            latitudeDelta: 0.009,
-                            longitudeDelta: 0.009,
-                        }}
-                        showsUserLocation
-                        loadingEnabled
-                        followsUserLocation
-                    >
-                        <Polyline coordinates={this.state.routeCoordinates} strokeWidth={5} />
-                        <Marker.Animated
-                            ref={this.marker}
-                            coordinate={this.state.coordinate}
-                            />
-                    </MapView>
-                    <View style={{width:"100%",alignItems:"center"}}>
-                        <Text>Hello World</Text>
+            <Provider>
+                <Portal>
+                <View style={styles.root}>
+                    <View style={styles.container}>
+                        {/* <MapboxGL.MapView style={styles.map}/> */}
+                        <MapView
+                            provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+                            style={styles.map}
+                            region={{
+                                latitude: this.state.latitude,
+                                longitude: this.state.longitude,
+                                latitudeDelta: 0.009,
+                                longitudeDelta: 0.009,
+                            }}
+                            showsUserLocation
+                            loadingEnabled
+                            followsUserLocation
+                        >
+                            <Polyline coordinates={this.state.routeCoordinates} strokeWidth={5} />
+                            <Marker.Animated
+                                ref={this.marker}
+                                coordinate={this.state.coordinate}
+                                />
+                        </MapView>
+                        <View style={{width:"90%",alignItems:"center",padding:10,backgroundColor: this.state.selectedTrail?"rgba(89, 125, 53,0.8)":"transparent",borderRadius: 20}}>
+                            <Text numberOfLines={2} style={{fontSize:25,fontWeight:"bold",color:"white"}}>{this.state.selectedTrail?this.state.clickedTrail.name:''}</Text>
+                        </View>
+                        <View style={{flex:1}}></View>
+                        {
+                            this.state.selectedTrail?
+                            <View style={styles.buttonContainer}>
+                                <TouchableOpacity style={[styles.bubble,{alignItems:"center",flexDirection:"row",justifyContent:"center"}]}>
+                                    <Text style={{fontSize:16,fontWeight:"700",color:"white",paddingRight:20}}>
+                                        Distance travelled: {parseFloat(this.state.distanceTravelled).toFixed(2)} km
+                                    </Text>
+                                    <IconButton
+                                        icon="stop"
+                                        color="white"
+                                        size={25}
+                                        onPress={this.stopRecording}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                            :<View style={styles.buttonContainer}>
+                                <TouchableOpacity 
+                                    onPress={this.onClickRequestRecord}
+                                    style={[styles.bubble,{alignItems:"center"}]}>
+                                    <Text style={{fontSize:16,fontWeight:"700",color:"white"}}>Click here to record</Text>
+                                </TouchableOpacity>
+                            </View>
+                        }
+                        
                     </View>
-                    <View style={{flex:1}}></View>
-                    {
-                        this.state.enableRecording?
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={[styles.bubble, styles.button]}>
-                                <Text style={styles.bottomBarContent}>
-                                    {parseFloat(this.state.distanceTravelled).toFixed(2)} km
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-                        :<View style={styles.buttonContainer}>
-                            <TouchableOpacity 
-                                onPress={this.onClickRequestRecord}
-                                style={[styles.bubble,{alignItems:"center"}]}>
-                                <Text>Hello</Text>
-                            </TouchableOpacity>
-                        </View>
-                    }
-                    
                 </View>
-            </View>
+                <Modal visible={this.state.visible} onDismiss={this.onDismiss} style={{alignItems:"center"}}>
+                    <View style={{height:height*0.8,width:width*0.8,backgroundColor:"white",alignItems:"center"}}>
+                        <View style={{width:"100%",alignItems:"flex-start"}}>
+                            <IconButton
+                                icon="close"
+                                onPress={this.onDismiss}
+                            />
+                        </View>
+                        <Text style={{fontSize:24,fontWeight:"bold"}}>Start tracking</Text>
+                        <View style={{height:45,width:width*0.7}}>
+                            <TextInput
+                                style={{height:45}}
+                                placeholder="Search your trail"
+                                mode="outlined"
+                                selectionColor="#597d35"
+                                theme={{colors:{primary:"#597d35"}}}
+                                value={this.state.searchInput}
+                                onChangeText={this.onSearch}
+                                />
+                        </View>
+                        <View style={{padding:8}}/>
+                        <View style={{height:height*0.55,width:width*0.75}}>
+                            <FlatList
+                                data = {this.props.trails}
+                                renderItem = {this.renderItem}
+                                keyExtractor = {(item, index) => index.toString()}
+                            />
+                        </View>
+                    </View>
+                </Modal>
+                </Portal>
+            </Provider>
         )
     }
     
 }
 
-
-export default Map;
+const mapStateToProps = (state) =>{
+    return {
+        trails: state.home.filteredTrails
+    }
+}
+const mapDispatchToProps =(dispatch) =>{
+    return {
+        searchTrails: (val)=>dispatch(homeActions.searchTrails(val))
+    }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Map);
