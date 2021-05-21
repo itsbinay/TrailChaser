@@ -5,35 +5,44 @@ import LinearGradient from 'react-native-linear-gradient';
 import { tutorial2Spech } from './theme';
 const {ITEM_WIDTH, ITEM_HEIGHT, RADIUS, SPACING, FULL_SIZE} = tutorial2Spech; 
 import Timeline from 'react-native-beautiful-timeline'
+import { StackActions } from '@react-navigation/routers';
 
 import {useDispatch,connect} from 'react-redux';
 import {historyActions} from '../../../redux/actions';
+import { useNavigation } from '@react-navigation/native';
 
 function TimelinePage(props) {
 
+    const navigation = useNavigation();
 
-  const dispatch = useDispatch()
-  useEffect(()=>{
-    dispatch(historyActions.fetchTimeline())
-  },[])
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        dispatch(historyActions.fetchTimeline())
+    },[])
 
-  console.log("props:",props.data.timeline)
-  return (
-      <SafeAreaView style={{flex: 1}}>
-          <LinearGradient colors={["#fbfbfb", "#edf4ff"]} style={styles.container}>
-          <View style={{width: "100%", height:"25%"}}>
-          <Text style={styles.heading}>
-              Timeline
-          </Text>
-          <Text style={styles.subheading}>
-              Your Timeline of visited trails
-          </Text>
-          </View>
-          <Timeline data={props.data.timeline} backgroundColor='transparent' />
-          </LinearGradient>
-      </SafeAreaView>
-
-  )
+    const onPressTile = (data) =>{
+        dispatch(historyActions.selectTimeline(data))
+        navigation.dispatch(StackActions.replace('RouteMap'))
+    }
+    return (
+        <SafeAreaView style={{flex: 1}}>
+            <LinearGradient colors={["#fbfbfb", "#edf4ff"]} style={styles.container}>
+            <View style={{width: "100%", height:"25%"}}>
+            <Text style={styles.heading}>
+                Timeline
+            </Text>
+            <Text style={styles.subheading}>
+                Your Timeline of visited trails
+            </Text>
+            </View>
+            <Timeline 
+                data={props.data.timeline}
+                onPressTile={onPressTile} 
+                backgroundColor='transparent' 
+                />
+            </LinearGradient>
+        </SafeAreaView>
+    )
 }
 
 
