@@ -128,7 +128,7 @@ function HistoryScreenRoot(props:any){
                                 height={75}
                                 textSize={15}
                                 iconSize={24}
-                                text="Total Distance Travelled"
+                                text="Statistics"
                                 iconColor="white"
                                 textColor="white"
                                 iconType="Entypo"
